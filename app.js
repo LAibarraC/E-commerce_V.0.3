@@ -12,48 +12,43 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
-app.use(express.static(path.join(__dirname, 'views/Product')));
-
-
 // Servir archivos estáticos desde las carpetas necesarias para acceder a HTML y CSS
-app.use(express.static(path.join(__dirname, 'views')));
-app.use(express.static(path.join(__dirname, 'views/navbar')));
-app.use(express.static(path.join(__dirname, 'views/icon')));
-app.use(express.static(path.join(__dirname, 'views/images')));
-app.use('/uploads', express.static('uploads'));
-
+app.use(express.static(path.join(__dirname, 'E-commerce/views')));  // Cambié esta línea para asegurar que toda la carpeta 'views' sea accesible
+app.use(express.static(path.join(__dirname, 'E-commerce/views/Product')));  // Asegura que 'Product' esté accesible
+app.use(express.static(path.join(__dirname, 'E-commerce/views/navbar')));  // Asegura que 'navbar' esté accesible
+app.use(express.static(path.join(__dirname, 'E-commerce/views/icon')));  // Asegura que 'icon' esté accesible
+app.use(express.static(path.join(__dirname, 'E-commerce/views/images')));  // Asegura que 'images' esté accesible
+app.use('/uploads', express.static('uploads'));  // Asegura que la carpeta 'uploads' esté accesible
 
 // Ruta para acceder a la página de agregar producto
 app.get('/addproduct', (req, res) => {
-    res.sendFile(path.join(__dirname, 'views/Product/HTML/Addproduct.html')); 
+    res.sendFile(path.join(__dirname, 'E-commerce/views/Product/HTML/Addproduct.html'));  // Ruta corregida
 });
 
-//lista de productos
+// Lista de productos
 app.get('/listproduct', (req, res) => {
-    res.sendFile(path.join(__dirname, 'views/Product/HTML/Listproduct.html')); 
+    res.sendFile(path.join(__dirname, 'E-commerce/views/Product/HTML/Listproduct.html'));  // Ruta corregida
 });
 
 app.get('/viewproduct/:id', (req, res) => {
-    res.sendFile(path.join(__dirname, 'views/Product/HTML/Viewproduct.html'));
+    res.sendFile(path.join(__dirname, 'E-commerce/views/Product/HTML/Viewproduct.html'));  // Ruta corregida
 });
 
 app.get('/login', (req, res) => {
-    res.sendFile(path.join(__dirname, 'views/login/HTML/login.html'));
+    res.sendFile(path.join(__dirname, 'E-commerce/views/login/HTML/login.html'));  // Ruta corregida
 });
 
 app.get('/register', (req, res) => {
-    res.sendFile(path.join(__dirname, 'views/login/HTML/register.html'));
+    res.sendFile(path.join(__dirname, 'E-commerce/views/login/HTML/register.html'));  // Ruta corregida
 });
 
-
 // Rutas de la API
-app.use('/api', userRoutes); 
+app.use('/api', userRoutes);
 app.use('/api', categoryRoutes);
 app.use('/api', productRoutes);
 
 // Sincronización con la base de datos
-sequelize.sync({ force: false }) 
+sequelize.sync({ force: false })
     .then(() => {
         console.log('Tablas sincronizadas');
     })
