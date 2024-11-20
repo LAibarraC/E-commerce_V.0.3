@@ -1,7 +1,7 @@
 const userService = require('../services/userService');
 
 class UserController { 
-    async login(req, res) { 
+    async login(req, res) {  
         try {
             const { username, password } = req.body;
             const user = await userService.login(username, password);

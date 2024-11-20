@@ -89,7 +89,7 @@ body {
     margin: 0 80px;
     display: flex;
     align-items: center;
-    position: relative;
+    position: relative; /* Asegura que el posicionamiento absoluto sea relativo a este contenedor */
 }
 
 .navbar-search input {
@@ -105,9 +105,8 @@ body {
 
 .search-button {
     position: absolute;
-    /*buscar*/
-    right: 32%;
-    top: 50%; 
+    right: 10px; /* Ajusta la posición según sea necesario */
+    top: 50%;
     transform: translateY(-50%);
     background-color: #111827;
     border: none;
