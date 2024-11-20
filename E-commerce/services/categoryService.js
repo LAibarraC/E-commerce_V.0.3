@@ -35,6 +35,7 @@ class CategoryService {
     async getCategory(id) {
         return await CategoryRepository.findById(id);
     }
+
     async searchCategories(criteria) {
         try {
             const query = {};
@@ -46,8 +47,8 @@ class CategoryService {
                 query.description = { [Op.like]: `%${criteria.description}%` };
             }
 
-            // Buscar categorías con los criterios proporcionados
-            const categories = await Category.findAll({ where: query });
+            // Buscar categorías con los criterios proporcionados usando el repositorio
+            const categories = await CategoryRepository.findAll({ where: query });
             return categories;
         } catch (err) {
             throw new Error('Error al buscar categorías: ' + err.message);

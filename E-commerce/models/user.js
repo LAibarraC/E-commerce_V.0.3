@@ -27,7 +27,7 @@ User.init({
         type: DataTypes.STRING,
         allowNull: false
     },
-    updateAt: {
+    updatedAt: {
         type: DataTypes.DATE,
         allowNull: true
     },

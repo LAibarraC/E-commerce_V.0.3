@@ -20,7 +20,7 @@ class UserRepository {
             username: user.username,
             email: user.email,
             password: user.password,
-            updateAt: user.updateAt,
+            updatedAt: user.updatedAt,
             image: user.image,
             role: user.role
         }, {

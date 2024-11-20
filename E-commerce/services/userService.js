@@ -22,7 +22,7 @@ class UserService {
             username: userData.username,
             email: userData.email,
             password: userData.password, // Usamos la contraseña tal como está
-            updateAt: new Date(),
+            updatedAt: new Date(),
             image: userData.image,
             role: userData.role || 'user' // Por defecto, asignar rol 'user'
         };
@@ -40,7 +40,7 @@ class UserService {
             username: userData.username,
             email: userData.email,
             password: userData.password,
-            updateAt: new Date(),
+            updatedAt: new Date(),
             image: userData.image,
             role: userData.role
         };
