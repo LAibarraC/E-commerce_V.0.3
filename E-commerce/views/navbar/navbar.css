@@ -104,7 +104,7 @@ body {
 
 
 .search-button {
-    position: absolute;
+ 
     /*buscar*/
     right: 32%;
     top: 50%; 
@@ -116,6 +116,8 @@ body {
     cursor: pointer;
     width: 35px;
     height: 25px;
+    margin-top: 25px;
+    margin-left: -40px;
 }
 
 .search-button img {
