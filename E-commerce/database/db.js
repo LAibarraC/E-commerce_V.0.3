@@ -1,21 +1,16 @@
 const { Sequelize } = require('sequelize');
 
-// Configuración de conexión usando tus credenciales locales
-const DB_NAME = 'ecommerce';
-const DB_USER = 'root';
-const DB_PASSWORD = '23luis99';
-const DB_HOST = '127.0.0.1';  // Asegúrate de usar la IP local de tu máquina
+// URL de conexión proporcionada por Render (copiada directamente)
+const DB_URL = process.env.DATABASE_URL || 'postgresql://ecommerce_mi2i_user:04psqq3FVA2gsH4VjqsDqHAEUJZDXk3O@dpg-csul2fqj1k6c738gbqo0-a.oregon-postgres.render.com/ecommerce_mi2i';
 
-const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
-  host: DB_HOST,
-  dialect: 'mysql',
-  port: 3306, // Puerto MySQL
-  logging: false, // Opcional: Deshabilitar logs SQL
+const sequelize = new Sequelize(DB_URL, {
+  dialect: 'postgres',
+  logging: false, // Deshabilitar logs SQL si es necesario
 });
 
 sequelize.authenticate()
   .then(() => {
-    console.log('Conexión exitosa a la base de datos MySQL');
+    console.log('Conexión exitosa a la base de datos PostgreSQL');
   })
   .catch(err => {
     console.error('Error al conectar a la base de datos:', err);
