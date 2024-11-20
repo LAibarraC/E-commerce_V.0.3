@@ -1,11 +1,18 @@
 const { Sequelize } = require('sequelize');
 
-// URL de conexión proporcionada por Render (copiada directamente)
-const DB_URL = process.env.DATABASE_URL || 'postgresql://ecommerce_mi2i_user:04psqq3FVA2gsH4VjqsDqHAEUJZDXk3O@dpg-csul2fqj1k6c738gbqo0-a.oregon-postgres.render.com/ecommerce_mi2i';
+// URL de conexión proporcionada por Render
+const DB_URL = 'postgresql://ecommerce_mi2i_user:04psqq3FVA2gsH4VjqsDqHAEUJZDXk3O@dpg-csul2fqj1k6c738gbqo0-a.oregon-postgres.render.com/ecommerce_mi2i';
 
+// Configuración de Sequelize para PostgreSQL usando la URL de conexión
 const sequelize = new Sequelize(DB_URL, {
   dialect: 'postgres',
-  logging: false, // Deshabilitar logs SQL si es necesario
+  dialectOptions: {
+    ssl: {
+      require: true,    // Requiere SSL
+      rejectUnauthorized: false  // Acepta el certificado auto-firmado (por si es necesario)
+    }
+  },
+  logging: false, // Opcional: Deshabilitar logs SQL
 });
 
 sequelize.authenticate()
@@ -17,4 +24,3 @@ sequelize.authenticate()
   });
 
 module.exports = sequelize;
-
