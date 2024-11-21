@@ -11,22 +11,30 @@ body {
 
 .navbar {
     display: flex;
-    align-items: center; /* Centrar verticalmente los elementos */
-    justify-content: space-between;
+    align-items: center;
     background-color: #111827;
-    height: 60px; /* Establece una altura fija */
-    padding: 0 20px; /* Ajusta el padding si es necesario */
+    height: 60px;
+    padding: 0 20px; 
     color: white;
     width: 100%;
 }
 
-.navbar-menu, .navbar-logo, .navbar-search, .navbar-links {
-    height: 100%; /* Asegura que los elementos internos ocupen toda la altura del navbar */
+.navbar-menu{
+    height: 100%;
     display: flex; 
-    align-items: center; /* Centra verticalmente los elementos dentro */
+    align-items: center; /
+}
+.navbar-logo{
+    width: 30%;
+}
+.navbar-links{
+    width: 20%;
+    margin-right: 20px;
+}
+.navbar-search{
+    width: 50%;
 }
 
-/* Otros estilos permanecen igual... */
 
 
 .navbar-menu {
@@ -95,7 +103,7 @@ body {
 }
 
 .navbar-search input {
-    width: 700px; 
+    width: 800px; 
     padding: 10px;
     border-radius: 5px;
     border: none;
@@ -140,8 +148,14 @@ body {
     font-size: 15px;
 }
 
-.user-icon, .cart-icon {
+.cart-icon {
     font-size: 13px;
     width: 20px;
     height: 20px;
+}
+.user-icon{
+    font-size: 13px;
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
 }
