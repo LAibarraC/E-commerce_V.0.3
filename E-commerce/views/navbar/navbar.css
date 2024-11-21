@@ -91,6 +91,7 @@ body {
     display: flex;
     align-items: center;
     position: relative;
+    width: 100%;
 }
 
 .navbar-search input {
