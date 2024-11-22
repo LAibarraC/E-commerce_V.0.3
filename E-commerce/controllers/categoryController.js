@@ -1,3 +1,4 @@
+const Category = require('../models/category');
 const categoryService = require('../services/categoryService');
 
 class CategoryController {
@@ -15,7 +16,9 @@ class CategoryController {
             // Enviar tanto el ID como el nombre de las categorías
             const categoryData = categories.map(category => ({
                 id: category.id,
-                name: category.name
+                name: category.name,
+                image: category.image,
+                updatedAt: category.updatedAt
             }));
             res.json(categoryData); // Enviar el array con objetos {id, name}
         } catch (err) {

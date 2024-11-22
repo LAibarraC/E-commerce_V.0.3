@@ -6,7 +6,6 @@ router.post('/login', userController.login);
 router.post('/register', userController.register);
 router.get('/users', userController.getAllUsers);
 
-
 // Obtener un usuario por ID
 router.get('/users/:id', userController.getUser);
  

@@ -11,7 +11,36 @@
  </style>
 </head>
 <body>
-    <div id="navbar-container"></div>
+    <div id="navbar-container">
+        <script>
+             fetch('/navbar/navbar.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('navbar-container').innerHTML = data;
+                    const menuButton = document.getElementById('menu-button');
+                    const submenu = document.getElementById('submenu');
+
+                    if (menuButton && submenu) {
+                        menuButton.addEventListener('click', function (event) {
+                            event.stopPropagation(); 
+                            if (submenu.style.display === 'none' || submenu.style.display === '') {
+                                submenu.style.display = 'block';
+                            } else {
+                                submenu.style.display = 'none';
+                            }
+                        });
+
+                        document.addEventListener('click', function (event) {
+                            if (!menuButton.contains(event.target) && !submenu.contains(event.target)) {
+                                submenu.style.display = 'none';
+                            }
+                        });
+                    }
+                })
+                .catch(error => console.error('Error al cargar el navbar:', error));
+        </script>
+
+    </div>
     <br><br>
     <div class="container">
         <div class="left-column">

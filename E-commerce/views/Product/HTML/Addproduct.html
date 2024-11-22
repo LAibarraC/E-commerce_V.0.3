@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,31 +9,38 @@
     <style>
         /* Estilos para el mensaje de éxito */
         #successMessage {
-            display: none; /* Inicialmente oculto */
+            display: none;
+            /* Inicialmente oculto */
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background-color: white; /* O el color que prefieras */
+            background-color: white;
+            /* O el color que prefieras */
             padding: 20px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            z-index: 1000; /* Asegúrate de que esté por encima de otros elementos */
+            z-index: 1000;
+            /* Asegúrate de que esté por encima de otros elementos */
             text-align: center;
         }
 
         /* Estilo para la superposición opaca */
         #overlay {
-            display: none; /* Inicialmente oculto */
+            display: none;
+            /* Inicialmente oculto */
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro con opacidad */
-            z-index: 999; /* Debe estar por debajo del mensaje de éxito */
+            background-color: rgba(0, 0, 0, 0.5);
+            /* Fondo oscuro con opacidad */
+            z-index: 999;
+            /* Debe estar por debajo del mensaje de éxito */
         }
-        .btnok{
+
+        .btnok {
             padding: 5px;
             border-radius: 5px;
             background-color: rgb(0, 187, 0);
@@ -41,29 +49,42 @@
             height: 30px;
 
         }
-        #navbar-container{
+
+        #navbar-container {
             width: 100%;
         }
     </style>
 </head>
+
 <body>
     <div id="navbar-container"></div>
-    <script>
-        fetch('/navbar/navbar.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('navbar-container').innerHTML = data;
-            });
-            
-        document.getElementById('menu-button').addEventListener('click', function() {
-            const submenu = document.getElementById('submenu');
-            if (submenu.style.display === 'none' || submenu.style.display === '') {
-                submenu.style.display = 'block';
-            } else {
-                submenu.style.display = 'none';
-            }
-        });
-    </script>
+        <script>
+            fetch('/navbar/navbar.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('navbar-container').innerHTML = data;
+                    const menuButton = document.getElementById('menu-button');
+                    const submenu = document.getElementById('submenu');
+
+                    if (menuButton && submenu) {
+                        menuButton.addEventListener('click', function (event) {
+                            event.stopPropagation(); 
+                            if (submenu.style.display === 'none' || submenu.style.display === '') {
+                                submenu.style.display = 'block';
+                            } else {
+                                submenu.style.display = 'none';
+                            }
+                        });
+
+                        document.addEventListener('click', function (event) {
+                            if (!menuButton.contains(event.target) && !submenu.contains(event.target)) {
+                                submenu.style.display = 'none';
+                            }
+                        });
+                    }
+                })
+                .catch(error => console.error('Error al cargar el navbar:', error));
+        </script>
     <script>
         // Función para obtener los nombres de las categorías y llenarlos en el <select>
         async function fetchCategoryNames() {
@@ -85,14 +106,15 @@
                 console.error('Error al obtener categorías:', error);
             }
         }
-        
+
         window.onload = fetchCategoryNames; // Llama a la función al cargar la página
     </script>
     <br>
     <main>
         <h2>NUEVO PRODUCTO</h2>
 
-        <form class="product_form_create" id="addProductForm" method="POST" action="http://localhost:3000/api/products" enctype="multipart/form-data">
+        <form class="product_form_create" id="addProductForm" method="POST" action="http://localhost:3000/api/products"
+            enctype="multipart/form-data">
             <div class="datos">
                 <div class="caja1">
                     <label for="nombre">Nombre del Producto:</label><br>
@@ -140,7 +162,7 @@
                         <select id="categoria" name="categoryId" required>
                             <option value="">Seleccione una categoría</option>
                             <!-- Las opciones de categoría se insertarán aquí -->
-                        </select>                        
+                        </select>
                     </div>
                 </div>
                 <div class="caja1">
@@ -161,7 +183,7 @@
                             <input type="file" id="imageInput3" name="image3" accept="image/*" class="hidden-input">
                             <button type="button" class="uploadButton" data-target="imageInput3">Subir Imagen</button>
                         </div>
-                    </div>    
+                    </div>
                 </div>
             </div>
             <button type="submit" class="submit-btn">Guardar Producto</button>
@@ -175,24 +197,24 @@
             <h3>Producto agregado correctamente</h3><br><br>
             <button class="btnok" id="okButton">OK</button>
         </div>
-    </main>    
+    </main>
 
     <script>
         document.querySelectorAll('.uploadButton').forEach(button => {
-            button.addEventListener('click', function() {
+            button.addEventListener('click', function () {
                 const target = this.getAttribute('data-target');
-                document.getElementById(target).click(); 
+                document.getElementById(target).click();
             });
         });
 
         document.querySelectorAll('input[type="file"]').forEach(input => {
-            input.addEventListener('change', function(event) {
+            input.addEventListener('change', function (event) {
                 const files = event.target.files;
                 const previewElement = event.target.previousElementSibling;
                 if (files.length > 0) {
                     const file = files[0];
                     const reader = new FileReader();
-                    reader.onload = function(e) {
+                    reader.onload = function (e) {
                         const img = document.createElement('img');
                         img.src = e.target.result;
                         previewElement.innerHTML = ''; // Limpia cualquier contenido anterior
@@ -203,7 +225,7 @@
             });
         });
 
-        document.getElementById('addProductForm').addEventListener('submit', async function(event) {
+        document.getElementById('addProductForm').addEventListener('submit', async function (event) {
             event.preventDefault(); // Prevenir el envío predeterminado del formulario
 
             const formData = new FormData(this); // Crear un objeto FormData para manejar los datos del formulario
@@ -239,4 +261,5 @@
         });
     </script>
 </body>
+
 </html>

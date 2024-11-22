@@ -14,6 +14,7 @@ class ProductController {
         discount: Joi.number().optional(),
         length: Joi.number().optional(),
         height: Joi.number().optional(),
+        thumbnail: Joi.string().optional().allow(null),
         status: Joi.boolean().optional(),
         model: Joi.string().optional(),
         stock: Joi.number().optional(),
@@ -31,14 +32,14 @@ class ProductController {
     async createProduct(req, res) {
         try {
             const productData = req.body;
-
-            // Verifica si se han subido imágenes y asigna a los campos correspondientes
-            if (productData.tags) {
+    
+            // Verifica si tags es una cadena de texto, y si es así, la convierte en un arreglo
+            if (productData.tags && typeof productData.tags === 'string') {
                 productData.tags = productData.tags.split(',').map(tag => tag.trim());
-            } else {
-                productData.tags = null; // O dejar como un arreglo vacío []
+            } else if (!productData.tags) {
+                productData.tags = []; // Si no se proporciona tags, asignar un arreglo vacío
             }
-            
+    
             const files = req.files;
             if (files) {
                 const baseUrl = req.protocol + '://' + req.get('host');
@@ -48,12 +49,12 @@ class ProductController {
                 productData.image2 = files.image2 ? `${baseUrl}/uploads/${files.image2[0].filename}` : null;
                 productData.image3 = files.image3 ? `${baseUrl}/uploads/${files.image3[0].filename}` : null;
             }
-
+    
             console.log('Generated Image URLs:', productData.image1, productData.image2, productData.image3);
-
+    
             // Validar el producto
             await ProductController.productSchema.validateAsync(productData);
-
+    
             // Crear el producto en la base de datos
             const productId = await productService.createProduct(productData);
             res.status(201).json({ success: true, id: productId, message: 'Producto guardado exitosamente' });
@@ -62,6 +63,7 @@ class ProductController {
             res.status(500).json({ success: false, message: 'Error en el servidor', error: error.message });
         }
     }
+    
     
     
     

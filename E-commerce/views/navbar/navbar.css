@@ -69,17 +69,21 @@ body {
     border-radius: 5px;
     list-style: none;
     padding: 10px;
-    width: 100px;
+    width: 170px;
 }
 
 .submenu li {
     margin: 5px 0;
+    padding-right: 5px;
+    margin-left: 5px;
+    
 }
 
 .submenu li a {
     color: white;
     text-decoration: none;
     font-size: 14px;
+    margin-left: 25px;
   
 }
 

@@ -16,10 +16,13 @@ app.use(express.urlencoded({ extended: true }));
 // Servir archivos estáticos desde las carpetas necesarias para acceder a HTML y CSS
 app.use(express.static(path.join(__dirname, 'E-commerce/views')));  // Cambié esta línea para asegurar que toda la carpeta 'views' sea accesible
 app.use(express.static(path.join(__dirname, 'E-commerce/views/Product')));  // Asegura que 'Product' esté accesible
+app.use(express.static(path.join(__dirname, 'E-commerce/views/principal')));  // Asegura que 'Product' esté accesible
 app.use(express.static(path.join(__dirname, 'E-commerce/views/navbar')));  // Asegura que 'navbar' esté accesible
 app.use(express.static(path.join(__dirname, 'E-commerce/views/icon')));  // Asegura que 'icon' esté accesible
 app.use(express.static(path.join(__dirname, 'E-commerce/views/images')));  // Asegura que 'images' esté accesible
-app.use('/uploads', express.static('uploads'));  // Asegura que la carpeta 'uploads' esté accesible
+app.use('/uploads', express.static(path.join(__dirname, 'E-commerce', 'uploads')));
+
+ // Asegura que la carpeta 'uploads' esté accesible
 
 // Ruta para acceder a la página de agregar producto
 app.get('/addproduct', (req, res) => {
@@ -41,6 +44,9 @@ app.get('/login', (req, res) => {
 
 app.get('/register', (req, res) => {
     res.sendFile(path.join(__dirname, 'E-commerce/views/login/HTML/register.html'));  // Ruta corregida
+});
+app.get('/principal', (req, res) => {
+    res.sendFile(path.join(__dirname, 'E-commerce/views/principal/HTML/principal.html'));  // Ruta corregida
 });
 
 // Rutas de la API

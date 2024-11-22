@@ -11,7 +11,7 @@ class UserService {
     }
 
     async register(userData) {
-        // Verifica si el nombre de usuario o correo ya existen
+        // Verifica si el nombre de usuario ya existe
         const existingUser = await UserRepository.findByUsername(userData.username);
         if (existingUser) {
             throw new Error('El nombre de usuario ya está en uso');
@@ -29,6 +29,7 @@ class UserService {
 
         return await UserRepository.createUser(user); // Llama al repositorio para crear el usuario
     }
+
     async getAllUsers() {
         return await UserRepository.findAllUsers();
     }

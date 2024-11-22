@@ -2,7 +2,8 @@ const { Sequelize } = require('sequelize');
 
 // URL de conexión proporcionada por Render
 const DB_URL = 'postgresql://ecommerce_mi2i_user:04psqq3FVA2gsH4VjqsDqHAEUJZDXk3O@dpg-csul2fqj1k6c738gbqo0-a.oregon-postgres.render.com/ecommerce_mi2i';
-
+//local
+//const DB_URL = 'postgresql://postgres:23luis99@localhost:5432/E-commerce';
 // Configuración de Sequelize para PostgreSQL usando la URL de conexión
 const sequelize = new Sequelize(DB_URL, {
   dialect: 'postgres',
@@ -24,3 +25,4 @@ sequelize.authenticate()
   });
 
 module.exports = sequelize;
+

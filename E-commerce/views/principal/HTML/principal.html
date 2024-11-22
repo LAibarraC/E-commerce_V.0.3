@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../CSS/principal.css">
+</head>
+
+<body onload="cargarProductos()">
+    <div id="navbar-container">
+        <script>
+            fetch('/navbar/navbar.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('navbar-container').innerHTML = data;
+                    const menuButton = document.getElementById('menu-button');
+                    const submenu = document.getElementById('submenu');
+
+                    if (menuButton && submenu) {
+                        menuButton.addEventListener('click', function (event) {
+                            event.stopPropagation();
+                            if (submenu.style.display === 'none' || submenu.style.display === '') {
+                                submenu.style.display = 'block';
+                            } else {
+                                submenu.style.display = 'none';
+                            }
+                        });
+
+                        document.addEventListener('click', function (event) {
+                            if (!menuButton.contains(event.target) && !submenu.contains(event.target)) {
+                                submenu.style.display = 'none';
+                            }
+                        });
+                    }
+                })
+                .catch(error => console.error('Error al cargar el navbar:', error));
+        </script>
+    </div>
+
+    <div class="botonesprincipales">
+        <button class="btn" id="destacados">Destacados</button>
+        <button class="btn" id="favoritos">Favoritos</button>
+        <button class="btn" id="categorias">Categorias</button>
+    </div>
+    <div id="productos-lista" class="producto-lista">
+
+    </div>
+
+</body>
+<script>
+    // Función para cargar productos desde la API
+    function cargarProductos() {
+        fetch('/api/products')
+            .then(response => response.json())
+            .then(data => {
+                // Verificamos que la propiedad 'products' esté presente y sea un array
+                const productosLista = document.getElementById('productos-lista');
+                productosLista.innerHTML = '';
+
+                if (data.success && Array.isArray(data.products)) {
+                    // Iteramos sobre los productos
+                    data.products.forEach(producto => {
+                        const divTarjeta = document.createElement('div');
+                        divTarjeta.classList.add('tarjeta');
+                        divTarjeta.innerHTML = `
+                                            <div class="product">
+                                                <div class="imagen">
+                                                <img src="/uploads/${producto.image1}" width="100%" height="100%">
+                                                </div>
+                                                <div class="nombre">
+                                                ${producto.name}
+                                                </div>
+                                                <div class="estrellas">
+                                                ----
+                                                </div>
+                                                <div class="precio">
+                                                <span>Precio:&nbsp;</span><span>${producto.price}</span><span>&nbsp;Bs.</span>
+                                                </div>
+                                                <div class="descuento">
+                                                <span>Descuento:&nbsp;</span><span>${producto.discount}</span><span>&nbsp;%</span>
+                                                </div>
+                                                <div class="visualizar">
+                                                <button class="btnn">Visualizar</button>
+                                                </div>
+                                            </div>
+                                            `;
+                        productosLista.appendChild(divTarjeta);
+                    });
+                } else {
+                    console.error('La respuesta no contiene un array de productos.');
+                }
+            })
+            .catch(error => console.error('Error al cargar los productos:', error));
+
+    }
+
+    // Llamar a la función para cargar los productos cuando la página se cargue
+    window.onload = cargarProductos;
+</script>
+
+</html>
