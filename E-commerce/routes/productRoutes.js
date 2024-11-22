@@ -53,6 +53,7 @@ router.get('/products/:id', productController.getProduct);
 router.put('/products/:id', productController.updateProduct);
 router.delete('/products/:id', productController.deleteProduct);
 router.get('/products/search', productController.searchProducts);
+router.get('/products/categories/:id', productController.getProductsByCategory);
 
 // Middleware para manejar errores de multer
 router.use((err, req, res, next) => {

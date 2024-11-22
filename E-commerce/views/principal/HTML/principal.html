@@ -123,6 +123,10 @@
                         </div>
                         <div class="nombr">${categoria.name}</div>
                     `;
+                            divCategoria.addEventListener('click', () => {
+                            cargarProductosPorCategoria(categoria.id, categoria.name);
+                            });    
+
                         productosCategorias.appendChild(divCategoria);
                     });
                 } else {
@@ -135,6 +139,59 @@
         document.getElementById('productos-favoritos').style.display = 'none';
         document.getElementById('productos-categorias').style.display = 'grid';
     }
+
+
+    function cargarProductosPorCategoria(categoryId, categoryName) {
+        fetch(`/api/products/categories/${categoryId}`)
+            .then(response => response.json())
+            .then(data => {
+                const productosLista = document.getElementById('productos-lista');
+                productosLista.innerHTML = '';
+
+                if (data.success && Array.isArray(data.products) && data.products.length > 0) {
+                    // Mostrar productos de la categoría
+                    data.products.forEach(producto => {
+                        const divTarjeta = document.createElement('div');
+                        divTarjeta.classList.add('tarjeta');
+                        divTarjeta.innerHTML = `
+                            <div class="product">
+                                <div class="imagen">
+                                    <img src="/uploads/${producto.image1}" width="100%" height="100%">
+                                </div>
+                                <div class="nombre">${producto.name}</div>
+                                <div class="estrellas">${mostrarCalificacion(producto.rating)} <span class="cali">&nbsp;&nbsp;${producto.rating}</span></div>
+                                <div class="precio">
+                                    <span>Precio:&nbsp;</span><span>${producto.price}</span><span>&nbsp;Bs.</span>
+                                </div>
+                                <div class="descuento">
+                                    <span>Descuento:&nbsp;</span><span>${producto.discount}</span><span>&nbsp;%</span>
+                                </div>
+                                <div class="visualizar">
+                                    <button class="btnn">Visualizar</button>
+                                </div>
+                            </div>
+                        `;
+                        productosLista.appendChild(divTarjeta);
+                    });
+                } else {
+                    // Mostrar mensaje si no hay productos
+                    productosLista.innerHTML = `
+                                    <div class="error">
+                                        No hay productos disponibles en la categoría "${categoryName}".
+                                    </div>`;
+
+                }
+
+                // Actualizar visibilidad
+                document.getElementById('productos-categorias').style.display = 'none';
+                document.getElementById('productos-lista').style.display = 'grid';
+            })
+            .catch(error => console.error('Error al cargar los productos de la categoría:', error));
+    }
+
+
+
+
     function mostrarCalificacion(rating) {
     // Calificación con parte decimal
     const estrellasCompletas = Math.floor(rating); // Estrellas completas

@@ -55,6 +55,8 @@ class UserService {
     async getUser(id) {
         return await UserRepository.findById(id);
     }
+
+    
 }
 
 module.exports = new UserService();

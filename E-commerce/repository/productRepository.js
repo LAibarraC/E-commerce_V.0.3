@@ -37,6 +37,10 @@ class ProductRepository {
         });
     }
 
+    static async  findProductsByCategory(categoryId) {
+        return await Product.findAll({ where: { categoryId } });
+    }
+    
 }
 
 

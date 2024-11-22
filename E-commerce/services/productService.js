@@ -15,7 +15,7 @@ class ProductService {
 
     async updateProduct(id, productData) {
         return await ProductRepository.updateProduct({ id, ...productData });
-    } 
+    }
 
     async deleteProduct(id) {
         return await ProductRepository.deleteProduct(id);
@@ -23,6 +23,20 @@ class ProductService {
 
     async searchProducts(query) {
         return await ProductRepository.searchProducts(query);
+    }
+
+    async getProductsByCategory(categoryId) {
+        if (!categoryId) {
+            throw new Error('Se debe proporcionar un id de categoría');
+        }
+
+        const products = await ProductRepository.findProductsByCategory(categoryId);
+
+        if (products.length === 0) {
+            throw new Error('No se encontraron productos para esta categoría');
+        }
+
+        return products;
     }
 }
 

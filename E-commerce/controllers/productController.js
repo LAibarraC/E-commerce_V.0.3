@@ -35,29 +35,29 @@ class ProductController {
     async createProduct(req, res) {
         try {
             const productData = req.body;
-    
+
             // Verifica si tags es una cadena de texto, y si es así, la convierte en un arreglo
             if (productData.tags && typeof productData.tags === 'string') {
                 productData.tags = productData.tags.split(',').map(tag => tag.trim());
             } else if (!productData.tags) {
                 productData.tags = []; // Si no se proporciona tags, asignar un arreglo vacío
             }
-    
+
             const files = req.files;
             if (files) {
                 const baseUrl = req.protocol + '://' + req.get('host');
-                
+
                 // Asignar cada imagen subida a su campo correspondiente (si existe)
                 productData.image1 = files.image1 ? `${baseUrl}/uploads/${files.image1[0].filename}` : null;
                 productData.image2 = files.image2 ? `${baseUrl}/uploads/${files.image2[0].filename}` : null;
                 productData.image3 = files.image3 ? `${baseUrl}/uploads/${files.image3[0].filename}` : null;
             }
-    
+
             console.log('Generated Image URLs:', productData.image1, productData.image2, productData.image3);
-    
+
             // Validar el producto
             await ProductController.productSchema.validateAsync(productData);
-    
+
             // Crear el producto en la base de datos
             const productId = await productService.createProduct(productData);
             res.status(201).json({ success: true, id: productId, message: 'Producto guardado exitosamente' });
@@ -66,10 +66,10 @@ class ProductController {
             res.status(500).json({ success: false, message: 'Error en el servidor', error: error.message });
         }
     }
-    
-    
-    
-    
+
+
+
+
 
     async getAllProducts(req, res) {
         try {
@@ -82,7 +82,7 @@ class ProductController {
 
     async getProduct(req, res) {
         try {
-            const productId = req.params.id; 
+            const productId = req.params.id;
             const product = await productService.getProduct(productId);
             if (!product) {
                 return res.status(404).json({ success: false, message: 'Producto no encontrado' });
@@ -123,6 +123,18 @@ class ProductController {
             res.status(400).json({ success: false, message: err.message });
         }
     }
+    async getProductsByCategory(req, res) {
+        const categoryId = req.params.id;
+
+        try {
+            const products = await productService.getProductsByCategory(categoryId);
+            res.json({ success: true, products });
+        } catch (error) {
+            res.status(500).json({ message: 'Error al obtener productos', error: error.message });
+        }
+    }
+
+
 }
 
 module.exports = new ProductController();

@@ -158,3 +158,22 @@
   }
 
 
+.error {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    width: 100%;
+    margin: auto;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #555;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    grid-column: span 6;
+}
+
+
+
+
