@@ -26,7 +26,14 @@ body {
 }
 .navbar-logo{
     width: 30%;
+    cursor: pointer; 
+    transition: transform 0.2s ease; 
 }
+.navbar-logo:hover {
+    transform: scale(1.05); 
+}
+
+
 .navbar-links{
     width: 20%;
     margin-right: 20px;

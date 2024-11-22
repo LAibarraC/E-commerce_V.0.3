@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../CSS/principal.css">
 </head>
 
-<body onload="cargarProductos()" onclick="cargarCategorias()">
+<body onload="cargarProductos()">
     <div id="navbar-container">
         <script>
             fetch('/navbar/navbar.html')
@@ -34,6 +34,13 @@
                             }
                         });
                     }
+                    const navbarLogo = document.querySelector('.navbar-logo');
+                    if (navbarLogo) {
+                        navbarLogo.addEventListener('click', () => {
+                            window.location.href = '/principal';
+                        });
+                    }
+
                 })
                 .catch(error => console.error('Error al cargar el navbar:', error));
         </script>
@@ -57,16 +64,16 @@
 </body>
 
 <script>
-    // Función para cargar productos desde la API
+
     function cargarProductos() {
         fetch('/api/products')
             .then(response => response.json())
             .then(data => {
                 const productosLista = document.getElementById('productos-lista');
-                productosLista.innerHTML = ''; // Limpia los productos existentes
+                productosLista.innerHTML = '';
 
                 if (data.success && Array.isArray(data.products)) {
-                    // Itera sobre los productos y agrega a la lista
+
                     data.products.forEach(producto => {
                         const divTarjeta = document.createElement('div');
                         divTarjeta.classList.add('tarjeta');
@@ -97,13 +104,12 @@
             .catch(error => console.error('Error al cargar los productos:', error));
     }
 
-    // Función para cargar categorías
     function cargarCategorias() {
         fetch('/api/categories')
             .then(response => response.json())
             .then(data => {
                 const productosCategorias = document.getElementById('productos-categorias');
-                productosCategorias.innerHTML = ''; // Limpia las categorías existentes
+                productosCategorias.innerHTML = '';
 
                 if (data && Array.isArray(data)) {
                     data.forEach(categoria => {
@@ -112,7 +118,7 @@
                         divCategoria.innerHTML = `
                         <div class="categoria">
                             <div class="imag">
-                                <img src="/uploads/${categoria.image}" width="100%" height="100%">
+                                <img src="/uploads/1727457499094-Auriculares Bluetooth Sony WF-1000XM4_Color White.png" width="100%" height="100%">
                             </div>
                         </div>
                         <div class="nombr">${categoria.name}</div>
@@ -125,14 +131,10 @@
             })
             .catch(error => console.error('Error al cargar las categorías:', error));
 
-        // Cambiar la vista a categorías
         document.getElementById('productos-lista').style.display = 'none';
         document.getElementById('productos-favoritos').style.display = 'none';
         document.getElementById('productos-categorias').style.display = 'grid';
     }
-
-
-    // Llamar a la función para cargar los productos cuando la página se cargue
 </script>
 
 </html>

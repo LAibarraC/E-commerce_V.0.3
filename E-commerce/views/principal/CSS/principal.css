@@ -33,6 +33,7 @@
     grid-template-columns: repeat(6, 1fr); /* 4 columnas de igual tamaño */
     gap: 25px; /* Espacio entre los productos */
     padding: 10px;
+    margin-top: 20px;
   
 
 }
