@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>ElectroShop</title>
     <link rel="stylesheet" href="../CSS/principal.css">
 </head>
 
@@ -83,7 +83,7 @@
                                     <img src="/uploads/${producto.image1}" width="100%" height="100%">
                                 </div>
                                 <div class="nombre">${producto.name}</div>
-                                <div class="estrellas">${mostrarCalificacion(producto.rating)}</div>
+                                <div class="estrellas">${mostrarCalificacion(producto.rating)} <span class="cali">&nbsp&nbsp${producto.rating}</span></div>
                                 <div class="precio">
                                     <span>Precio:&nbsp;</span><span>${producto.price}</span><span>&nbsp;Bs.</span>
                                 </div>
