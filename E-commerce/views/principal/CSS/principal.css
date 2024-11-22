@@ -145,3 +145,13 @@
     font-weight: bold; 
     
 }
+.estrellas {
+    font-size: 20px;
+    color: black;
+    margin: auto;
+  }
+  .estrella-vacia {
+    color: #000; /* Color de las estrellas vacías */
+  }
+
+

@@ -38,11 +38,23 @@ Product.init({
         type: DataTypes.STRING,
         allowNull: true
     },
+    color1: { // Color asociado a image1
+        type: DataTypes.STRING,
+        allowNull: true
+    },
     image2: {  // Campo para la segunda imagen
         type: DataTypes.STRING,
         allowNull: true
     },
+    color2: { // Color asociado a image2
+        type: DataTypes.STRING,
+        allowNull: true
+    },
     image3: {  // Campo para la tercera imagen
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    color3: { // Color asociado a image3
         type: DataTypes.STRING,
         allowNull: true
     },
@@ -87,9 +99,10 @@ Product.init({
         allowNull: true,
         defaultValue: true
     },
-    color: { // Agrega este campo para el color
-        type: DataTypes.STRING,
-        allowNull: true
+    rating: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+        defaultValue: 0
     },
     categoryId: { // Campo para la relación con categoría
         type: DataTypes.INTEGER,

@@ -83,7 +83,7 @@
                                     <img src="/uploads/${producto.image1}" width="100%" height="100%">
                                 </div>
                                 <div class="nombre">${producto.name}</div>
-                                <div class="estrellas">----</div>
+                                <div class="estrellas">${mostrarCalificacion(producto.rating)}</div>
                                 <div class="precio">
                                     <span>Precio:&nbsp;</span><span>${producto.price}</span><span>&nbsp;Bs.</span>
                                 </div>
@@ -135,6 +135,29 @@
         document.getElementById('productos-favoritos').style.display = 'none';
         document.getElementById('productos-categorias').style.display = 'grid';
     }
+    function mostrarCalificacion(rating) {
+    // Calificación con parte decimal
+    const estrellasCompletas = Math.floor(rating); // Estrellas completas
+    const estrellasVacías = 5 - Math.ceil(rating); // Estrellas vacías
+    const estrellasParciales = rating % 1; // Parte de la estrella parcial
+
+    // Crear las estrellas con base en la calificación
+    let estrellasHTML = '';
+
+    // Estrellas completas
+    estrellasHTML += '★'.repeat(estrellasCompletas);
+
+    // Estrella parcial (si tiene)
+    if (estrellasParciales > 0) {
+        estrellasHTML += '★'; // Agregar una estrella completa para mostrar parcial
+    }
+
+    // Estrellas vacías
+    estrellasHTML += '☆'.repeat(estrellasVacías);
+
+    return estrellasHTML; // Devolver el HTML generado
+}
+
 </script>
 
 </html>

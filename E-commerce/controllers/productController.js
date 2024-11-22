@@ -9,7 +9,6 @@ class ProductController {
         name: Joi.string().optional(),
         code: Joi.string().optional(),
         brand: Joi.string().optional(),
-        color: Joi.string().optional(),
         price: Joi.number().optional(),
         discount: Joi.number().optional(),
         length: Joi.number().optional(),
@@ -22,9 +21,13 @@ class ProductController {
         width: Joi.number().optional(),
         warranty: Joi.number().optional(),
         description: Joi.string().optional(),
+        rating: Joi.number().precision(2).optional(),
         image1: Joi.string().optional().allow(null),
+        color1: Joi.string().optional(),
         image2: Joi.string().optional().allow(null),
+        color2: Joi.string().optional(),
         image3: Joi.string().optional().allow(null),
+        color3: Joi.string().optional(),
         tags: Joi.array().items(Joi.string()).optional(),
         categoryId: Joi.number().required()
     });
