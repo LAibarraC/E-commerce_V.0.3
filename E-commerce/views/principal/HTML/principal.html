@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../CSS/principal.css">
 </head>
 
-<body onload="cargarProductos()">
+<body onload="cargarProductos()" onclick="cargarCategorias()">
     <div id="navbar-container">
         <script>
             fetch('/navbar/navbar.html')
@@ -42,50 +42,52 @@
     <div class="botonesprincipales">
         <button class="btn" id="destacados">Destacados</button>
         <button class="btn" id="favoritos">Favoritos</button>
-        <button class="btn" id="categorias">Categorias</button>
+        <button onclick="cargarCategorias()" class="btn" id="categorias">Categorias</button>
     </div>
-    <div id="productos-lista" class="producto-lista">
 
+    <div id="productos-lista" class="producto-lista">
+    </div>
+
+    <div id="productos-favoritos" class="producto-lista">
+    </div>
+
+    <div id="productos-categorias" class="producto-categorias">
     </div>
 
 </body>
+
 <script>
     // Función para cargar productos desde la API
     function cargarProductos() {
         fetch('/api/products')
             .then(response => response.json())
             .then(data => {
-                // Verificamos que la propiedad 'products' esté presente y sea un array
                 const productosLista = document.getElementById('productos-lista');
-                productosLista.innerHTML = '';
+                productosLista.innerHTML = ''; // Limpia los productos existentes
 
                 if (data.success && Array.isArray(data.products)) {
-                    // Iteramos sobre los productos
+                    // Itera sobre los productos y agrega a la lista
                     data.products.forEach(producto => {
                         const divTarjeta = document.createElement('div');
                         divTarjeta.classList.add('tarjeta');
                         divTarjeta.innerHTML = `
-                                            <div class="product">
-                                                <div class="imagen">
-                                                <img src="/uploads/${producto.image1}" width="100%" height="100%">
-                                                </div>
-                                                <div class="nombre">
-                                                ${producto.name}
-                                                </div>
-                                                <div class="estrellas">
-                                                ----
-                                                </div>
-                                                <div class="precio">
-                                                <span>Precio:&nbsp;</span><span>${producto.price}</span><span>&nbsp;Bs.</span>
-                                                </div>
-                                                <div class="descuento">
-                                                <span>Descuento:&nbsp;</span><span>${producto.discount}</span><span>&nbsp;%</span>
-                                                </div>
-                                                <div class="visualizar">
-                                                <button class="btnn">Visualizar</button>
-                                                </div>
-                                            </div>
-                                            `;
+                            <div class="product">
+                                <div class="imagen">
+                                    <img src="/uploads/${producto.image1}" width="100%" height="100%">
+                                </div>
+                                <div class="nombre">${producto.name}</div>
+                                <div class="estrellas">----</div>
+                                <div class="precio">
+                                    <span>Precio:&nbsp;</span><span>${producto.price}</span><span>&nbsp;Bs.</span>
+                                </div>
+                                <div class="descuento">
+                                    <span>Descuento:&nbsp;</span><span>${producto.discount}</span><span>&nbsp;%</span>
+                                </div>
+                                <div class="visualizar">
+                                    <button class="btnn">Visualizar</button>
+                                </div>
+                            </div>
+                        `;
                         productosLista.appendChild(divTarjeta);
                     });
                 } else {
@@ -93,11 +95,44 @@
                 }
             })
             .catch(error => console.error('Error al cargar los productos:', error));
-
     }
 
+    // Función para cargar categorías
+    function cargarCategorias() {
+        fetch('/api/categories')
+            .then(response => response.json())
+            .then(data => {
+                const productosCategorias = document.getElementById('productos-categorias');
+                productosCategorias.innerHTML = ''; // Limpia las categorías existentes
+
+                if (data && Array.isArray(data)) {
+                    data.forEach(categoria => {
+                        const divCategoria = document.createElement('div');
+                        divCategoria.classList.add('tarjeta');
+                        divCategoria.innerHTML = `
+                        <div class="categoria">
+                            <div class="imag">
+                                <img src="/uploads/${categoria.image}" width="100%" height="100%">
+                            </div>
+                        </div>
+                        <div class="nombr">${categoria.name}</div>
+                    `;
+                        productosCategorias.appendChild(divCategoria);
+                    });
+                } else {
+                    console.error('No se encontraron categorías o la respuesta es inválida.');
+                }
+            })
+            .catch(error => console.error('Error al cargar las categorías:', error));
+
+        // Cambiar la vista a categorías
+        document.getElementById('productos-lista').style.display = 'none';
+        document.getElementById('productos-favoritos').style.display = 'none';
+        document.getElementById('productos-categorias').style.display = 'grid';
+    }
+
+
     // Llamar a la función para cargar los productos cuando la página se cargue
-    window.onload = cargarProductos;
 </script>
 
 </html>
