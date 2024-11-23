@@ -134,7 +134,18 @@ class ProductController {
         }
     }
 
-
+    async getFeaturedProducts(req, res) {
+        try {
+            const featuredProducts = await productService.getFeaturedProducts();
+            if (featuredProducts.length === 0) {
+                return res.status(404).json({ success: false, message: 'No se encontraron productos destacados' });
+            }
+            res.json({ success: true, products: featuredProducts });
+        } catch (err) {
+            console.error('Error al obtener productos destacados:', err.message);
+            res.status(500).json({ success: false, message: 'Error en el servidor', error: err.message });
+        }
+    }
 }
 
 module.exports = new ProductController();

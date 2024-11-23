@@ -38,6 +38,9 @@ class ProductService {
 
         return products;
     }
+    async getFeaturedProducts() {
+        return await ProductRepository.findFeaturedProducts();
+    }
 }
 
 module.exports = new ProductService();

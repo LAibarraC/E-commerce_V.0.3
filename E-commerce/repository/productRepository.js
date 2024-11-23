@@ -10,7 +10,7 @@ class ProductRepository {
     static async findAllProducts() {
         return await Product.findAll();
     }
- 
+
     static async findById(id) {
         return await Product.findByPk(id);
     }
@@ -37,10 +37,23 @@ class ProductRepository {
         });
     }
 
-    static async  findProductsByCategory(categoryId) {
+    static async findProductsByCategory(categoryId) {
         return await Product.findAll({ where: { categoryId } });
     }
-    
+
+    static async findFeaturedProducts() {
+        const products = await Product.findAll({
+            where: {
+                rating: {
+                    [Op.gte]: 3.5
+                }
+            }
+        });
+
+        return products;
+    }
+
+
 }
 
 

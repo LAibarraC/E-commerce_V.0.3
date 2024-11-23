@@ -47,7 +47,7 @@
     </div>
 
     <div class="botonesprincipales">
-        <button class="btn" id="destacados">Destacados</button>
+        <button  onclick="cargarProductosDestacados()" class="btn" id="destacados">Destacados</button>
         <button class="btn" id="favoritos">Favoritos</button>
         <button onclick="cargarCategorias()" class="btn" id="categorias">Categorias</button>
     </div>
@@ -59,6 +59,8 @@
     </div>
 
     <div id="productos-categorias" class="producto-categorias">
+    </div>
+    <div id="productos-destacados" class="producto-lista">
     </div>
 
 </body>
@@ -118,19 +120,23 @@
     });
 
     function cargarContenidoSegunURL() {
-        const params = new URLSearchParams(window.location.search);
-        const categoria = params.get('categoria');
-        const categoryId = params.get('categoryId');
-        const categoryName = params.get('categoryName');
+        const urlParams = new URLSearchParams(window.location.search);
+        const categoria = urlParams.get('categoria');
+        const categoryId = urlParams.get('categoryId');
+        const categoryName = urlParams.get('categoryName');
+        const destacados = urlParams.get('destacados');
 
         if (categoria === 'true') {
             cargarCategorias();
         } else if (categoryId && categoryName) {
             cargarProductosPorCategoria(categoryId, categoryName);
+        } else if (destacados === 'true') {
+            cargarProductosDestacados();
         } else {
             cargarProductos();
         }
     }
+
 
     function cargarCategorias() {
         const newUrl = `${window.location.pathname}?categoria=true`;
@@ -218,6 +224,59 @@
             })
             .catch(error => console.error('Error al cargar los productos de la categoría:', error));
     }
+
+    function cargarProductosDestacados() {
+    // Actualizar la URL sin recargar la página
+    const newUrl = `${window.location.pathname}?destacados=true`;
+    if (window.location.search !== '?destacados=true') {
+        history.pushState(null, '', newUrl);
+    }
+
+    // Petición para obtener productos destacados
+    fetch('/api/product/featureds')
+        .then(response => response.json())
+        .then(data => {
+            const productosLista = document.getElementById('productos-destacados');
+            productosLista.innerHTML = ''; // Limpiar los productos existentes
+
+            if (data.success && Array.isArray(data.products)) {
+                data.products.forEach(producto => {
+                    const divTarjeta = document.createElement('div');
+                    divTarjeta.classList.add('tarjeta');
+                    divTarjeta.innerHTML = `
+                        <div class="product">
+                            <div class="imagen">
+                                <img src="/uploads/${producto.image1}" width="100%" height="100%">
+                            </div>
+                            <div class="nombre">${producto.name}</div>
+                            <div class="estrellas">${mostrarCalificacion(producto.rating)} <span class="cali">&nbsp;&nbsp;${producto.rating}</span></div>
+                            <div class="precio">
+                                <span>Precio:&nbsp;</span><span>${producto.price}</span><span>&nbsp;Bs.</span>
+                            </div>
+                            <div class="descuento">
+                                <span>Descuento:&nbsp;</span><span>${producto.discount}</span><span>&nbsp;%</span>
+                            </div>
+                            <div class="visualizar">
+                                <button class="btnn">Visualizar</button>
+                            </div>
+                        </div>
+                    `;
+                    productosLista.appendChild(divTarjeta);
+                });
+            } else {
+                productosLista.innerHTML = `
+                    <div class="error">
+                        No hay productos destacados disponibles.
+                    </div>
+                `;
+            }
+
+            document.getElementById('productos-categorias').style.display = 'none';
+            document.getElementById('productos-favoritos').style.display = 'none';
+            document.getElementById('productos-lista').style.display = 'none'; 
+        })
+        .catch(error => console.error('Error al cargar los productos destacados:', error));
+}
     function mostrarCalificacion(rating) {
         const estrellasCompletas = Math.floor(rating);
         const estrellasVacías = 5 - Math.ceil(rating);
@@ -231,4 +290,5 @@
         return estrellasHTML;
     }
 </script>
+
 </html>
