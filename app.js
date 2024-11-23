@@ -49,6 +49,7 @@ app.get('/principal', (req, res) => {
     res.sendFile(path.join(__dirname, 'E-commerce/views/principal/HTML/principal.html'));  // Ruta corregida
 });
 
+
 // Rutas de la API
 app.use('/api', userRoutes);
 app.use('/api', categoryRoutes);
