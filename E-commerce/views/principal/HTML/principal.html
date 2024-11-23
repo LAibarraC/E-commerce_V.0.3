@@ -175,6 +175,7 @@
 
         document.getElementById('productos-lista').style.display = 'none';
         document.getElementById('productos-favoritos').style.display = 'none';
+        document.getElementById('productos-destacados').style.display = 'none';
         document.getElementById('productos-categorias').style.display = 'grid';
     }
 
@@ -220,6 +221,7 @@
                 }
 
                 document.getElementById('productos-categorias').style.display = 'none';
+                document.getElementById('productos-destacados').style.display = 'none';
                 document.getElementById('productos-lista').style.display = 'grid';
             })
             .catch(error => console.error('Error al cargar los productos de la categoría:', error));
@@ -273,7 +275,8 @@
 
             document.getElementById('productos-categorias').style.display = 'none';
             document.getElementById('productos-favoritos').style.display = 'none';
-            document.getElementById('productos-lista').style.display = 'none'; 
+            document.getElementById('productos-lista').style.display = 'none';
+            document.getElementById('productos-destacados').style.display = 'grid'; 
         })
         .catch(error => console.error('Error al cargar los productos destacados:', error));
 }
