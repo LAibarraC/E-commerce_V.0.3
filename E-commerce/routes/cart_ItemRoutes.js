@@ -9,4 +9,4 @@ router.put('/cart-items/:id', cartItemController.updateItem); // Actualizar un i
 router.delete('/cart-items/:id', cartItemController.removeItem); // Eliminar un item del carrito
 
 module.exports = router;
-
+ 

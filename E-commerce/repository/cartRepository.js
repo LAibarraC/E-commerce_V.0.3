@@ -5,9 +5,9 @@ class CartRepository {
     static async createCart(userId) {
         try {
             const newCart = await Cart.create({ userId });
-            return newCart.id;
+            return newCart.id;  // Devuelve el ID del carrito creado
         } catch (error) {
-            throw new Error('Error creating cart: ' + error.message);
+            throw new Error('Error al crear el carrito en la base de datos: ' + error.message);
         }
     }
     

@@ -32,8 +32,13 @@ class UserRepository {
         await User.destroy({ where: { id } });
     }
 
-    static async findById(id) {
-        return await User.findByPk(id);
+    static async findById(userId) {
+        try {
+            const user = await User.findByPk(userId);
+            return user;  // Devuelve el usuario si se encuentra
+        } catch (error) {
+            throw new Error('Error al buscar el usuario en la base de datos: ' + error.message);
+        }
     }
 }
 

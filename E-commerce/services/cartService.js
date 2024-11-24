@@ -1,12 +1,19 @@
 const CartRepository = require('../repository/cartRepository');
+const UserRepository = require('../repository/userRepository');
 
 class CartService {
     async createCart(userId) {
-        if (!userId) {
-            throw new Error('Se debe proporcionar un id de usuario');
-        }
         try {
-            return await CartRepository.createCart(userId);
+            // Verificar si el usuario existe
+            const user = await UserRepository.findById(userId);
+
+            if (!user) {
+                throw new Error('El usuario con el id proporcionado no existe');
+            }
+
+            // Crear el carrito
+            const cartId = await CartRepository.createCart(userId);
+            return cartId;  // Devuelve el ID del carrito creado
         } catch (error) {
             throw new Error('Error al crear el carrito: ' + error.message);
         }

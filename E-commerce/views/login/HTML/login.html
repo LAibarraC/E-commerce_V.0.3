@@ -51,6 +51,16 @@
                 });
 
                 if (response.ok) {
+                    const data = await response.json();  // Recibe la respuesta con solo id y name
+
+            // Accede solo al id y name del usuario
+            const userId = "4";
+            const userName = data.user.name;
+
+            // Almacena el id y name en el localStorage o en alguna variable global
+            localStorage.setItem('userId', userId);
+            localStorage.setItem('userName', userName);
+                    
                     window.location.href = '/principal';
                 } else {
                     const errorData = await response.json();
