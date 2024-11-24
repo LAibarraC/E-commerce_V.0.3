@@ -41,6 +41,14 @@ class ProductService {
     async getFeaturedProducts() {
         return await ProductRepository.findFeaturedProducts();
     }
+
+    async getSimilarProducts(productId) {
+        try {
+            return await ProductRepository.findSimilarProducts(productId);
+        } catch (error) {
+            throw new Error("Error en el servicio de productos similares.");
+        }
+    }
 }
 
 module.exports = new ProductService();

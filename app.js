@@ -49,6 +49,14 @@ app.get('/principal', (req, res) => {
     res.sendFile(path.join(__dirname, 'E-commerce/views/principal/HTML/principal.html'));  // Ruta corregida
 });
 
+app.get('/product-details/:id', (req, res) => {
+    res.sendFile(path.join(__dirname, 'E-commerce/views/principal/HTML/viewproduct.html'));  // Ruta corregida
+});
+
+app.get('/search', (req, res) => {
+    res.sendFile(path.join(__dirname, 'E-commerce/views/principal/HTML/buscador.html'));  // Ruta corregida
+});
+
 
 // Rutas de la API
 app.use('/api', userRoutes);

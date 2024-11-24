@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscador</title>
+    <link rel="stylesheet" href="../CSS/buscador.css">
+</head>
+
+<body>
+    <div id="navbar-container">
+        <script>
+            fetch('/navbar/navbar.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('navbar-container').innerHTML = data;
+                    const menuButton = document.getElementById('menu-button');
+                    const submenu = document.getElementById('submenu');
+    
+                    if (menuButton && submenu) {
+                        menuButton.addEventListener('click', function (event) {
+                            event.stopPropagation();
+                            if (submenu.style.display === 'none' || submenu.style.display === '') {
+                                submenu.style.display = 'block';
+                            } else {
+                                submenu.style.display = 'none';
+                            }
+                        });
+    
+                        document.addEventListener('click', function (event) {
+                            if (!menuButton.contains(event.target) && !submenu.contains(event.target)) {
+                                submenu.style.display = 'none';
+                            }
+                        });
+                    }
+    
+                    const navbarLogo = document.querySelector('.navbar-logo');
+                    if (navbarLogo) {
+                        navbarLogo.addEventListener('click', () => {
+                            window.location.href = '/principal';
+                        });
+                    }
+    
+                    const searchInput = document.querySelector('.navbar-search input');
+                    const searchButton = document.querySelector('.navbar-search .search-button');
+    
+                    // Rellena el buscador con el término de la URL si existe
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const query = urlParams.get('q');
+                    if (query && searchInput) {
+                        searchInput.value = decodeURIComponent(query);
+                    }
+    
+                    // Redirige al buscar con validación
+                    if (searchInput && searchButton) {
+                        searchButton.addEventListener('click', () => {
+                            const query = searchInput.value.trim();
+                            if (query) {
+                                window.location.href = `/search?q=${encodeURIComponent(query)}`;
+                            } else {
+                                alert("Por favor ingresa un término de búsqueda.");
+                            }
+                        });
+                    }
+    
+                })
+                .catch(error => console.error('Error al cargar el navbar:', error));
+        </script>
+    </div>
+
+    <div class="container">
+        <div class="filtro">
+            <div class="fil">Filtro:</div>
+            <div class="pre">Precio:</div>
+            <div><input class="numero" type="number"></div>
+            <div class="h">Hasta:</div>
+            <div><input class="numero" type="number"></div>
+        </div>
+        <div class="ordenar">
+            <div class="or">Ordenar por:&nbsp;</div>
+            <div><button class="bn">Nuevos</button></div>
+            <div><button class="bn">Populares</button></div>
+        </div>
+    </div>
+
+    <div class="contenido" id="contenido">
+    </div>
+
+    <script>
+        // Función para realizar la búsqueda y mostrar los resultados
+        function realizarBusqueda() {
+            const params = new URLSearchParams(window.location.search);
+            const searchTerm = params.get('q');
+            if (searchTerm) {
+                fetch(`/api/prod/search?query=${encodeURIComponent(searchTerm)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const resultsDiv = document.getElementById('contenido');
+                        resultsDiv.innerHTML = '';
+
+                        // Agregar una verificación para ver si la respuesta es válida y tiene productos
+                        if (data.success && Array.isArray(data.products) && data.products.length > 0) {
+                            data.products.forEach(product => {
+                                const divTarjeta = document.createElement('div');
+                                divTarjeta.classList.add('tarjeta');
+                                divTarjeta.innerHTML = `
+                                <div class="product">
+                                    <div class="imagen">
+                                        <img src="/uploads/${product.image1}" width="100%" height="100%">
+                                    </div>
+                                    <div class="nombre">${product.name}</div>
+                                    <div class="estrellas">${mostrarCalificacion(product.rating)} <span class="cali">&nbsp;&nbsp;${product.rating}</span></div>
+                                    <div class="precio">
+                                        <span>Precio:&nbsp;</span><span>${product.price}</span><span>&nbsp;Bs.</span>
+                                    </div>
+                                    <div class="descuento">
+                                        <span>Descuento:&nbsp;</span><span>${product.discount}</span><span>&nbsp;%</span>
+                                    </div>
+                                    <div class="visualizar">
+                                        <button class="btnn" data-id="${product.id}">Visualizar</button>
+                                    </div>
+                                </div>
+                            `;
+                                resultsDiv.appendChild(divTarjeta);
+                            });
+
+                            const botonesVisualizar = document.querySelectorAll('.btnn');
+                            botonesVisualizar.forEach(boton => {
+                                boton.addEventListener('click', (event) => {
+                                    const productId = event.target.getAttribute('data-id');
+                                    if (productId) {
+                                        window.location.href = `/product-details/${productId}`;
+                                    }
+                                });
+                            });
+                        } else {
+                            // Mostrar el mensaje si no hay productos
+                            resultsDiv.innerHTML = `
+                        <div class="error">
+                            No se encontraron resultados para "${searchTerm}".
+                        </div>`;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error al obtener los resultados:', error);
+                        const resultsDiv = document.getElementById('contenido');
+                        resultsDiv.innerHTML = `
+                    <div class="error">
+                        Ocurrió un error al realizar la búsqueda. Inténtalo nuevamente.
+                    </div>`;
+                    });
+            } else {
+                // Si no hay término de búsqueda en la URL
+                const resultsDiv = document.getElementById('contenido');
+                resultsDiv.innerHTML = `
+                <div class="error">
+                    Por favor, ingresa un término de búsqueda.
+                </div>`;
+            }
+        }
+
+
+        realizarBusqueda();
+
+        function mostrarCalificacion(rating) {
+            const estrellasCompletas = Math.floor(rating);
+            const estrellasVacías = 5 - Math.ceil(rating);
+            const estrellasParciales = rating % 1;
+            let estrellasHTML = '';
+            estrellasHTML += '★'.repeat(estrellasCompletas);
+            if (estrellasParciales > 0) {
+                estrellasHTML += '★';
+            }
+            estrellasHTML += '☆'.repeat(estrellasVacías);
+            return estrellasHTML;
+        }
+    </script>
+</body>
+
+</html>

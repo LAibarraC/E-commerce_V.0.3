@@ -52,10 +52,10 @@ router.get('/products', productController.getAllProducts);
 router.get('/products/:id', productController.getProduct);
 router.put('/products/:id', productController.updateProduct);
 router.delete('/products/:id', productController.deleteProduct);
-router.get('/products/search', productController.searchProducts);
+router.get('/prod/search', productController.searchProducts);
 router.get('/products/categories/:id', productController.getProductsByCategory);
 router.get('/product/featureds', productController.getFeaturedProducts);
-
+router.get('/products/:productId/similar', productController.getSimilarProducts);
 
 
 // Middleware para manejar errores de multer

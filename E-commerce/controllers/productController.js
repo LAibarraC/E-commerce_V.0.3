@@ -146,6 +146,24 @@ class ProductController {
             res.status(500).json({ success: false, message: 'Error en el servidor', error: err.message });
         }
     }
+    async getSimilarProducts(req, res) {
+        const { productId } = req.params;
+
+        try {
+            const similarProducts = await productService.getSimilarProducts(productId);
+            return res.json({
+                success: true,
+                products: similarProducts
+            });
+        } catch (error) {
+            return res.status(500).json({
+                success: false,
+                message: error.message
+            });
+        }
+    }
+
+
 }
 
 module.exports = new ProductController();

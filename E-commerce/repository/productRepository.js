@@ -31,7 +31,7 @@ class ProductRepository {
                 [Op.or]: [
                     { name: { [Op.like]: `%${query}%` } },
                     { brand: { [Op.like]: `%${query}%` } },
-                    { tags: { [Op.contains]: query } } // Para búsqueda en etiquetas
+                    { model: { [Op.like]: `%${query}%` } }
                 ]
             }
         });
@@ -53,7 +53,39 @@ class ProductRepository {
         return products;
     }
 
-
+    static async findSimilarProducts(productId) {
+        try {
+            const product = await Product.findByPk(productId);
+            if (!product) {
+                return [];
+            }
+    
+            // Definir el rango de precio (entre -10 y +20 del precio del producto actual)
+            const minPrice = product.price - 10;
+            const maxPrice = product.price + 20;
+    
+            // Buscar productos similares basados en marca, modelo, categoría, descuento, valoración y rango de precio
+            const similarProducts = await Product.findAll({
+                where: {
+                    [Op.and]: [
+                        { categoryId: product.categoryId },  // Mismo categoría
+                        { brand: product.brand },  // Mismo marca
+                        { model: product.model },  // Mismo modelo
+                        { discount: product.discount },  // Mismo descuento
+                        { rating: { [Op.gte]: product.rating } },  // Valoración similar o mayor
+                        { price: { [Op.between]: [minPrice, maxPrice] } }  // Precio dentro del rango
+                    ],
+                    id: { [Op.ne]: productId }  // Asegurar que el producto actual no se incluya
+                }
+            });
+    
+            return similarProducts;
+        } catch (error) {
+            console.error("Error al obtener productos similares:", error);
+            throw new Error("No se pudieron obtener productos similares.");
+        }
+    }
+    
 }
 
 
