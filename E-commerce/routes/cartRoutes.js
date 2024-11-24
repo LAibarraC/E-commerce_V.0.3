@@ -9,6 +9,7 @@ router.put('/carts/item', cartController.updateCartItemQuantity); // Actualizar 
 router.delete('/carts/:cartId/item/:productId', cartController.removeItemFromCart); // Eliminar un ítem del carrito
 router.delete('/carts/:cartId', cartController.clearCart); // Limpiar el carrito
 router.get('/carts/:cartId/total', cartController.calculateTotal); // Calcular el total del carrito
+router.get('/totalitemscart/:idcart', cartController.getTotalItemsInCart);
 
 module.exports = router;
 

@@ -67,6 +67,17 @@ class CartRepository {
 
         return total;
     }
+
+    static async countItemsInCart(cartId) {
+        try {
+            const cartItems = await CartItem.count({
+                where: { cartId }
+            });
+            return cartItems;
+        } catch (error) {
+            throw new Error('Error al contar los ítems en el carrito: ' + error.message);
+        }
+    }
 }
 
 module.exports = CartRepository;

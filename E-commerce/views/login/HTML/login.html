@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ElectroShop - Login</title>
     <link rel="stylesheet" href="CSS/login.css">
 </head>
+
 <body>
     <div class="login-container">
         <div class="login-box">
@@ -24,15 +26,15 @@
 
                 <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
                 <div class="btn">
-                    <button type="button" class="login-button">Login</button>      
+                    <button type="button" class="login-button">Login</button>
                 </div>
                 <p class="create-account">No tengo cuenta <a href="#" id="register-link">Crear uno</a></p>
             </form>
         </div>
     </div>
     <script>
-        document.querySelector('.login-button').addEventListener('click', async function(event) {
-            event.preventDefault(); 
+        document.querySelector('.login-button').addEventListener('click', async function (event) {
+            event.preventDefault();
 
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
@@ -53,18 +55,17 @@
                 if (response.ok) {
                     const data = await response.json();  // Recibe la respuesta con solo id y name
 
-            // Accede solo al id y name del usuario
-            const userId = "4";
-            const userName = data.user.name;
+                    const userId = data.user.id;
+                    const userName = data.user.name;
 
-            // Almacena el id y name en el localStorage o en alguna variable global
-            localStorage.setItem('userId', userId);
-            localStorage.setItem('userName', userName);
-                    
+                    // Almacena el id y name en el localStorage o en alguna variable global
+                    localStorage.setItem('userId', userId);
+                    localStorage.setItem('userName', userName);
+
                     window.location.href = '/principal';
                 } else {
                     const errorData = await response.json();
-                    
+
                     // Mostrar error basado en la respuesta del servidor
                     if (errorData.message.includes('usuario')) {
                         document.getElementById('username-error').textContent = 'Usuario o contraseña incorrectos';
@@ -80,15 +81,16 @@
         });
 
         // Limpiar mensaje de error cuando el usuario empieza a escribir
-        document.getElementById('username').addEventListener('input', function() {
+        document.getElementById('username').addEventListener('input', function () {
             document.getElementById('username-error').textContent = '';
         });
-        document.getElementById('password').addEventListener('input', function() {
+        document.getElementById('password').addEventListener('input', function () {
             document.getElementById('password-error').textContent = '';
         });
-        document.getElementById('register-link').addEventListener('click', function() {
+        document.getElementById('register-link').addEventListener('click', function () {
             window.location.href = '/register'; // Redirige a la página de registro
         });
     </script>
 </body>
+
 </html>

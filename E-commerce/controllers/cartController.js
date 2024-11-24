@@ -107,6 +107,21 @@ class CartController {
             res.status(400).json({ success: false, message: err.message });
         }
     }
+
+    async getTotalItemsInCart(req, res) {
+        const cartId = req.params.idcart;
+
+        if (!cartId) {
+            return res.status(400).json({ message: 'Se debe proporcionar un id de carrito' });
+        }
+
+        try {
+            const itemCount = await cartService.countItemsInCart(cartId);
+            res.status(200).json({ totalItems: itemCount });
+        } catch (error) {
+            res.status(500).json({ message: 'Error al obtener el total de ítems en el carrito: ' + error.message });
+        }
+    }
 }
 
 module.exports = new CartController();

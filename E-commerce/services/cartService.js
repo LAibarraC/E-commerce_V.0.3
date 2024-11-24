@@ -107,6 +107,16 @@ class CartService {
             throw new Error('Error al calcular el total del carrito: ' + error.message);
         }
     }
+
+
+    async countItemsInCart(cartId) {
+        try {
+            const itemCount = await CartRepository.countItemsInCart(cartId);
+            return itemCount;
+        } catch (error) {
+            throw new Error('Error al contar los ítems en el carrito: ' + error.message);
+        }
+    }
 }
 
 module.exports = new CartService();

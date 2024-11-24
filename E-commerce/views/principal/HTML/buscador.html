@@ -15,10 +15,10 @@
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById('navbar-container').innerHTML = data;
-    
+
+                    // Menú desplegable
                     const menuButton = document.getElementById('menu-button');
                     const submenu = document.getElementById('submenu');
-    
                     if (menuButton && submenu) {
                         menuButton.addEventListener('click', function (event) {
                             event.stopPropagation();
@@ -28,39 +28,37 @@
                                 submenu.style.display = 'none';
                             }
                         });
-    
                         document.addEventListener('click', function (event) {
                             if (!menuButton.contains(event.target) && !submenu.contains(event.target)) {
                                 submenu.style.display = 'none';
                             }
                         });
                     }
-    
+
+                    // Redirigir al carrito
                     const navbarcarrito = document.querySelector('.cart-icon');
                     if (navbarcarrito) {
                         navbarcarrito.addEventListener('click', () => {
                             window.location.href = '/carrito';
                         });
                     }
-    
+
+                    // Redirigir al logo
                     const navbarLogo = document.querySelector('.navbar-logo');
                     if (navbarLogo) {
                         navbarLogo.addEventListener('click', () => {
                             window.location.href = '/principal';
                         });
                     }
-    
+
+                    // Búsqueda
                     const searchInput = document.querySelector('.navbar-search input');
                     const searchButton = document.querySelector('.navbar-search .search-button');
-    
-                    // Rellena el buscador con el término de la URL si existe
                     const urlParams = new URLSearchParams(window.location.search);
                     const query = urlParams.get('q');
                     if (query && searchInput) {
                         searchInput.value = decodeURIComponent(query);
                     }
-    
-                    // Redirige al buscar con validación
                     if (searchInput && searchButton) {
                         searchButton.addEventListener('click', () => {
                             const query = searchInput.value.trim();
@@ -71,18 +69,63 @@
                             }
                         });
                     }
-    
-                    // Reemplazar "Registro" por el nombre del usuario si está logueado
+
+                    // Nombre de usuario
                     const userName = localStorage.getItem('userName');
                     const registerLink = document.querySelector('#register-link');
-    
+                    const userId = localStorage.getItem('userId');
+
                     if (userName && registerLink) {
-                        registerLink.textContent = userName;  // Cambiar el texto a nombre del usuario
-                        registerLink.href = '/perfil';  // Opcional: Redirige al perfil del usuario si se hace clic
+                        registerLink.textContent = userName;
+                        registerLink.href = '/perfil';
                     }
-    
+
+                    if (userId) {
+                        fetch(`/api/carts/${userId}`)
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success && data.cart && data.cart.id) {
+                                    const cartId = data.cart.id;
+                                    localStorage.setItem('cartId', cartId);
+                                    console.log(cartId);
+                                    actualizarContadorCarrito(cartId);
+                                } else {
+                                    console.error('No se encontró cartId para el usuario');
+                                }
+                            })
+                            .catch(error => console.error('Error al obtener cartId del usuario:', error));
+                    }
                 })
                 .catch(error => console.error('Error al cargar el navbar:', error));
+
+            function actualizarContadorCarrito(cartId) {
+                if (!cartId) {
+                    console.error('No se encontró un cartId válido en localStorage.');
+                    return;
+                }
+
+                fetch(`/api/totalitemscart/${cartId}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Error al hacer la solicitud a la API');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('Respuesta de la API:', data);
+                        if (data.totalItems !== undefined) {
+                            const cartCountElement = document.getElementById('cart-count');
+                            if (cartCountElement) {
+                                cartCountElement.innerText = data.totalItems || 0; // Actualiza el contador
+                            }
+                        } else {
+                            console.error('Error: No se encontró el total de artículos en la respuesta');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error al obtener el total de items del carrito:', error);
+                    });
+            }
         </script>
     </div>
 
@@ -90,9 +133,9 @@
         <div class="filtro">
             <div class="fil">Filtro:</div>
             <div class="pre">Precio:</div>
-            <div><input class="numero" id="precioMin" type="number"></div>
+            <div><input class="numero" id="precioMin" type="number"></div>bs.&nbsp;&nbsp;
             <div class="h">Hasta:</div>
-            <div><input class="numero" id="precioMax" type="number"></div>
+            <div><input class="numero" id="precioMax" type="number"></div>&nbsp;bs.
         </div>
         <div class="ordenar">
             <div class="or">Ordenar por:&nbsp;</div>
