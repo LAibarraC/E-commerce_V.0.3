@@ -23,11 +23,11 @@ class ProductController {
         description: Joi.string().optional(),
         rating: Joi.number().precision(2).optional(),
         image1: Joi.string().optional().allow(null),
-        color1: Joi.string().optional(),
+        color1: Joi.string().optional().allow(null),
         image2: Joi.string().optional().allow(null),
-        color2: Joi.string().optional(),
+        color2: Joi.string().optional().allow(null),
         image3: Joi.string().optional().allow(null),
-        color3: Joi.string().optional(),
+        color3: Joi.string().optional().allow(null),
         tags: Joi.array().items(Joi.string()).optional(),
         categoryId: Joi.number().required()
     });
@@ -160,6 +160,40 @@ class ProductController {
                 success: false,
                 message: error.message
             });
+        }
+    }
+
+
+    // Nueva función para manejar la búsqueda por precio máximo y mínimo
+    async searchProductMaxmin(req, res) {
+        try {
+            const { query, precioMin, precioMax } = req.query;
+            const products = await productService.searchProductMaxmin(query, precioMin, precioMax);
+            res.json({ success: true, products });
+        } catch (err) {
+            res.status(400).json({ success: false, message: err.message });
+        }
+    }
+
+    // Nueva función para obtener los productos más recientes
+    async searchNewArrivals(req, res) {
+        try {
+            const { query } = req.query;
+            const products = await productService.searchNewArrivals(query);
+            res.json({ success: true, products });
+        } catch (err) {
+            res.status(400).json({ success: false, message: err.message });
+        }
+    }
+
+    // Nueva función para obtener los productos más populares
+    async searchPopularProducts(req, res) {
+        try {
+            const { query } = req.query;
+            const products = await productService.searchPopularProducts(query);
+            res.json({ success: true, products });
+        } catch (err) {
+            res.status(400).json({ success: false, message: err.message });
         }
     }
 

@@ -49,6 +49,23 @@ class ProductService {
             throw new Error("Error en el servicio de productos similares.");
         }
     }
+
+
+     // Agregar la nueva función para buscar productos por precio mínimo y máximo
+     async searchProductMaxmin(query, precioMin, precioMax) {
+        return await ProductRepository.searchProductMaxmin(query, precioMin, precioMax);
+    }
+
+    // Agregar la función para buscar los productos más nuevos
+    async searchNewArrivals(query) {
+        return await ProductRepository.searchNewArrivals(query);
+    }
+
+    // Agregar la función para buscar los productos más populares
+    async searchPopularProducts(query) {
+        return await ProductRepository.searchPopularProducts(query);
+    }
+
 }
 
 module.exports = new ProductService();

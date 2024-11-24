@@ -57,6 +57,11 @@ router.get('/products/categories/:id', productController.getProductsByCategory);
 router.get('/product/featureds', productController.getFeaturedProducts);
 router.get('/products/:productId/similar', productController.getSimilarProducts);
 
+router.get('/prod/search/maxmin', productController.searchProductMaxmin);
+router.get('/prod/search/newarrivals', productController.searchNewArrivals);
+router.get('/prod/search/popular', productController.searchPopularProducts);
+
+
 
 // Middleware para manejar errores de multer
 router.use((err, req, res, next) => {
