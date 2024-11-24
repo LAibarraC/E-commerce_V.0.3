@@ -1,7 +1,7 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../database/db');
-const Cart = require('./cart');  // Asegúrate de importar el modelo de Cart
-const Product = require('./product');  // Asegúrate de tener el modelo de Product
+const Cart = require('./cart'); // Importa Cart
+const Product = require('./product'); // Importa Product
 
 class CartItem extends Model {}
 
@@ -13,29 +13,30 @@ CartItem.init({
     },
     cartId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
         references: {
-            model: Cart, // Relación con el modelo Cart
+            model: 'cart', // Evita dependencia circular con Cart
             key: 'id'
         }
     },
     productId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: Product, // Relación con el modelo Product
-            key: 'id'
-        }
+        allowNull: false
     },
     quantity: {
         type: DataTypes.INTEGER,
         allowNull: false
     }
 }, {
-    sequelize, 
+    sequelize,
     modelName: 'CartItem',
-    tableName: 'cart_items',
+    tableName: 'cart_item',
     timestamps: false
 });
 
+// Relaciones
+CartItem.belongsTo(Cart, { foreignKey: 'cartId' });
+CartItem.belongsTo(Product, { foreignKey: 'productId' });
+Cart.hasMany(CartItem, { foreignKey: 'cartId' });
+
 module.exports = CartItem;
+

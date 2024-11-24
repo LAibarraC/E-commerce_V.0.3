@@ -1,7 +1,7 @@
-const CartItemRepository = require('../repository/cartItemRepository');
+const CartItemRepository = require('../repository/cart_ItemRepository');
 
 class CartItemService {
-    async getCartItemById(id) {
+    async getCartItems(id) {
         if (!id) {
             throw new Error('Se debe proporcionar un id del ítem del carrito');
         }

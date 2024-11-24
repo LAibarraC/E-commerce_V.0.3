@@ -5,7 +5,11 @@ class CartService {
         if (!userId) {
             throw new Error('Se debe proporcionar un id de usuario');
         }
-        return await CartRepository.createCart(userId);
+        try {
+            return await CartRepository.createCart(userId);
+        } catch (error) {
+            throw new Error('Error al crear el carrito: ' + error.message);
+        }
     }
 
     async getCartByUserId(userId) {
@@ -27,7 +31,20 @@ class CartService {
             throw new Error('Se deben proporcionar el id del carrito y los datos del ítem');
         }
 
-        return await CartRepository.addItemToCart(cartId, cartItemData);
+        try {
+            const existingItem = await CartRepository.findItemByCartAndProduct(cartId, cartItemData.productId);
+
+            if (existingItem) {
+                // Si el producto ya existe, actualiza la cantidad
+                const newQuantity = existingItem.quantity + cartItemData.quantity;
+                return await CartRepository.updateCartItemQuantity(cartId, cartItemData.productId, newQuantity);
+            } else {
+                // Si no existe, lo agrega
+                return await CartRepository.addItemToCart(cartId, cartItemData);
+            }
+        } catch (error) {
+            throw new Error('Error al agregar el producto al carrito: ' + error.message);
+        }
     }
 
     async removeItemFromCart(cartId, productId) {
@@ -35,7 +52,11 @@ class CartService {
             throw new Error('Se deben proporcionar el id del carrito y el id del producto');
         }
 
-        await CartRepository.removeItemFromCart(cartId, productId);
+        try {
+            await CartRepository.removeItemFromCart(cartId, productId);
+        } catch (error) {
+            throw new Error('Error al eliminar el producto del carrito: ' + error.message);
+        }
     }
 
     async clearCart(cartId) {
@@ -43,7 +64,11 @@ class CartService {
             throw new Error('Se debe proporcionar un id de carrito');
         }
 
-        await CartRepository.clearCart(cartId);
+        try {
+            await CartRepository.clearCart(cartId);
+        } catch (error) {
+            throw new Error('Error al vaciar el carrito: ' + error.message);
+        }
     }
 
     async updateCartItemQuantity(cartId, productId, quantity) {
@@ -51,7 +76,11 @@ class CartService {
             throw new Error('Se deben proporcionar el id del carrito, el id del producto y la cantidad');
         }
 
-        await CartRepository.updateCartItemQuantity(cartId, productId, quantity);
+        try {
+            await CartRepository.updateCartItemQuantity(cartId, productId, quantity);
+        } catch (error) {
+            throw new Error('Error al actualizar la cantidad del producto en el carrito: ' + error.message);
+        }
     }
 
     async calculateCartTotal(cartId) {
@@ -59,7 +88,17 @@ class CartService {
             throw new Error('Se debe proporcionar un id de carrito');
         }
 
-        return await CartRepository.calculateCartTotal(cartId);
+        try {
+            const cartItems = await CartRepository.getCartItems(cartId);
+
+            const total = cartItems.reduce((sum, item) => {
+                return sum + item.product.price * item.quantity; // Suponiendo que el precio está relacionado al producto
+            }, 0);
+
+            return total;
+        } catch (error) {
+            throw new Error('Error al calcular el total del carrito: ' + error.message);
+        }
     }
 }
 

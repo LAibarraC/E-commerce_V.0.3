@@ -18,7 +18,7 @@
                     document.getElementById('navbar-container').innerHTML = data;
                     const menuButton = document.getElementById('menu-button');
                     const submenu = document.getElementById('submenu');
-    
+
                     if (menuButton && submenu) {
                         menuButton.addEventListener('click', function (event) {
                             event.stopPropagation();
@@ -28,31 +28,38 @@
                                 submenu.style.display = 'none';
                             }
                         });
-    
+
                         document.addEventListener('click', function (event) {
                             if (!menuButton.contains(event.target) && !submenu.contains(event.target)) {
                                 submenu.style.display = 'none';
                             }
                         });
                     }
-    
+
+                    const navbarcarrito = document.querySelector('.cart-icon');
+                    if (navbarcarrito) {
+                        navbarcarrito.addEventListener('click', () => {
+                            window.location.href = '/carrito';
+                        });
+                    }
+
                     const navbarLogo = document.querySelector('.navbar-logo');
                     if (navbarLogo) {
                         navbarLogo.addEventListener('click', () => {
                             window.location.href = '/principal';
                         });
                     }
-    
+
                     const searchInput = document.querySelector('.navbar-search input');
                     const searchButton = document.querySelector('.navbar-search .search-button');
-    
+
                     // Rellena el buscador con el término de la URL si existe
                     const urlParams = new URLSearchParams(window.location.search);
                     const query = urlParams.get('q');
                     if (query && searchInput) {
                         searchInput.value = decodeURIComponent(query);
                     }
-    
+
                     // Redirige al buscar con validación
                     if (searchInput && searchButton) {
                         searchButton.addEventListener('click', () => {
@@ -64,12 +71,11 @@
                             }
                         });
                     }
-    
+
                 })
                 .catch(error => console.error('Error al cargar el navbar:', error));
         </script>
     </div>
-
 
     <div class="contenedor">
         <div class="caja">

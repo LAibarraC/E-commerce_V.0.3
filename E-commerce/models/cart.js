@@ -1,6 +1,5 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../database/db');
-const User = require('./user');  // Asegúrate de importar el modelo de User
 
 class Cart extends Model {}
 
@@ -14,7 +13,7 @@ Cart.init({
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: User, // Relación con el modelo User
+            model: 'user', // Evita importar directamente el modelo User
             key: 'id'
         }
     }
@@ -26,3 +25,5 @@ Cart.init({
 });
 
 module.exports = Cart;
+
+

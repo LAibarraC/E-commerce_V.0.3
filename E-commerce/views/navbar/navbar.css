@@ -163,10 +163,31 @@ body {
     font-size: 13px;
     width: 20px;
     height: 20px;
+    cursor: pointer;
+    transition: transform 0.2s ease; 
+
+}
+.cart-icon:hover {
+    transform: scale(1.05); 
 }
 .user-icon{
     font-size: 13px;
     width: 30px;
     height: 30px;
     border-radius: 100%;
+}
+
+
+.cart-icon-container {
+    position: relative;
+}
+.cart-count {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 14px;
 }

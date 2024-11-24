@@ -35,6 +35,13 @@
                         });
                     }
 
+                    const navbarcarrito = document.querySelector('.cart-icon');
+                    if (navbarcarrito) {
+                        navbarcarrito.addEventListener('click', () => {
+                            window.location.href = '/carrito';
+                        });
+                    }
+
                     const navbarLogo = document.querySelector('.navbar-logo');
                     if (navbarLogo) {
                         navbarLogo.addEventListener('click', () => {

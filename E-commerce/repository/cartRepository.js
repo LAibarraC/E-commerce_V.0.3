@@ -3,9 +3,14 @@ const CartItem = require('../models/cart_item');
 
 class CartRepository {
     static async createCart(userId) {
-        const newCart = await Cart.create({ userId });
-        return newCart.id;
+        try {
+            const newCart = await Cart.create({ userId });
+            return newCart.id;
+        } catch (error) {
+            throw new Error('Error creating cart: ' + error.message);
+        }
     }
+    
 
     static async findByUserId(userId) {
         return await Cart.findOne({

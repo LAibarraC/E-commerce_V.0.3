@@ -3,6 +3,8 @@ const bodyParser = require('body-parser');
 const userRoutes = require('./E-commerce/routes/userRoutes');
 const categoryRoutes = require('./E-commerce/routes/categoryRoutes');
 const productRoutes = require('./E-commerce/routes/productRoutes');
+const cartRoutes = require('./E-commerce/routes/cartRoutes');
+const cart_ItemRoutes = require('./E-commerce/routes/cart_ItemRoutes');
 const sequelize = require('./E-commerce/database/db');
 
 const path = require('path');
@@ -16,6 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 // Servir archivos estáticos desde las carpetas necesarias para acceder a HTML y CSS
 app.use(express.static(path.join(__dirname, 'E-commerce/views')));  // Cambié esta línea para asegurar que toda la carpeta 'views' sea accesible
 app.use(express.static(path.join(__dirname, 'E-commerce/views/Product')));  // Asegura que 'Product' esté accesible
+app.use(express.static(path.join(__dirname, 'E-commerce/views/carrito')));  // Asegura que 'Product' esté accesible
 app.use(express.static(path.join(__dirname, 'E-commerce/views/principal')));  // Asegura que 'Product' esté accesible
 app.use(express.static(path.join(__dirname, 'E-commerce/views/navbar')));  // Asegura que 'navbar' esté accesible
 app.use(express.static(path.join(__dirname, 'E-commerce/views/icon')));  // Asegura que 'icon' esté accesible
@@ -57,11 +60,18 @@ app.get('/search', (req, res) => {
     res.sendFile(path.join(__dirname, 'E-commerce/views/principal/HTML/buscador.html'));  // Ruta corregida
 });
 
+app.get('/carrito', (req, res) => {
+    res.sendFile(path.join(__dirname, 'E-commerce/views/carrito/HTML/cart.html'));  // Ruta corregida
+});
+
 
 // Rutas de la API
 app.use('/api', userRoutes);
 app.use('/api', categoryRoutes);
 app.use('/api', productRoutes);
+app.use('/api', userRoutes);
+app.use('/api', cartRoutes);
+app.use('/api', cart_ItemRoutes);
 
 // Sincronización con la base de datos
 sequelize.sync({ force: false })
