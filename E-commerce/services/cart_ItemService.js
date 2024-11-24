@@ -1,4 +1,4 @@
-const CartItemRepository = require('../repository/cart_ItemRepository');
+const CartItemRepository = require('../repository/cartItemRepository');
 
 class CartItemService {
     async getCartItems(id) {

@@ -4,7 +4,7 @@ const userRoutes = require('./E-commerce/routes/userRoutes');
 const categoryRoutes = require('./E-commerce/routes/categoryRoutes');
 const productRoutes = require('./E-commerce/routes/productRoutes');
 const cartRoutes = require('./E-commerce/routes/cartRoutes');
-const cart_ItemRoutes = require('./E-commerce/routes/cart_ItemRoutes');
+const cart_ItemRoutes = require('./E-commerce/routes/cartItemRoutes');
 const sequelize = require('./E-commerce/database/db');
 
 const path = require('path');

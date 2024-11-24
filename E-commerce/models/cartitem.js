@@ -29,7 +29,7 @@ CartItem.init({
 }, {
     sequelize,
     modelName: 'CartItem',
-    tableName: 'cart_item',
+    tableName: 'cartitem',
     timestamps: false
 });
 

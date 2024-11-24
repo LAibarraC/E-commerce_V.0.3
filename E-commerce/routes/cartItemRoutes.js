@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const cartItemController = require('../controllers/cart_ItemController'); // Asegúrate de que el nombre del archivo sea correcto (cartItemController.js)
+const cartItemController = require('../controllers/cartItemController'); // Asegúrate de que el nombre del archivo sea correcto (cartItemController.js)
 
 // Rutas para los ítems del carrito
 router.post('/cart-items', cartItemController.addItem); // Añadir un item al carrito
