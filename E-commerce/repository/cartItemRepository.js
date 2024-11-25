@@ -7,7 +7,7 @@ class CartItemRepository {
             where: { cartId },  // Filtrar por cartId
             include: [{
                 model: Product,
-                attributes: ['id', 'name', 'price']  // Especifica solo los atributos que necesitas del Producto
+                attributes: ['id', 'name', 'price', 'description','image1','categoryId']  // Especifica solo los atributos que necesitas del Producto
             }],
         });
     }
