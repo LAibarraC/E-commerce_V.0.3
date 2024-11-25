@@ -346,109 +346,107 @@
             }
         }
         function agregarAlCarrito() {
-    const quantity = parseInt(document.getElementById('quantity').innerText, 10);
-    const pathParts = window.location.pathname.split('/');
-    const productId = pathParts[pathParts.length - 1];
-    const userId = localStorage.getItem('userId');
+            const quantity = parseInt(document.getElementById('quantity').innerText, 10);
+            const pathParts = window.location.pathname.split('/');
+            const productId = pathParts[pathParts.length - 1];
+            const userId = localStorage.getItem('userId');
 
-    if (!userId) {
-        alert("Por favor, inicia sesión antes de agregar productos al carrito.");
-        return;
-    }
-
-    if (quantity <= 0) {
-        alert("Por favor, selecciona una cantidad mayor a 0.");
-        return;
-    }
-
-    let cartId;
-
-    // Verifica si existe un carrito para el usuario
-    fetch(`/api/carts/${userId}`)
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                // Si el carrito ya existe
-                cartId = data.cart.id;
-                console.log("Carrito encontrado, ID:", cartId);
-                return cartId;
-            } else {
-                // Crear un nuevo carrito
-                return fetch(`/api/carts`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ userId })
-                })
-                    .then(response => response.json())
-                    .then(newCartData => {
-                        if (newCartData.success) {
-                            cartId = newCartData.cart.id;
-                            console.log("Nuevo carrito creado, ID:", cartId);
-                            return cartId;
-                        } else {
-                            throw new Error("Error al crear un nuevo carrito.");
-                        }
-                    });
+            if (!userId) {
+                alert("Por favor, inicia sesión antes de agregar productos al carrito.");
+                return;
             }
-        })
-        .then(cartId => {
-            // Crear un cart-item con el cartId obtenido
-            return fetch(`/api/cart-items`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ cartId, productId, quantity })
-            });
-        })
-        .then(response => response.json())
-        .then(itemData => {
-            if (itemData.success) {
-                showSuccessModal();
-                return fetch(`/api/products/${productId}`)
-                    .then(response => response.json())
-                    .then(productData => {
-                        if (productData.success) {
-                            const updatedStock = productData.product.stock - quantity;
-                            if (updatedStock < 0) {
-                                alert("No hay suficiente stock disponible.");
-                                throw new Error("Stock insuficiente.");
-                            }
-                            return fetch(`/api/products/${productId}`, {
-                                method: 'PUT',
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                },
-                                body: JSON.stringify({
-                                    stock: updatedStock,
-                                    categoryId: productData.product.categoryId
-                                })
+
+            if (quantity <= 0) {
+                alert("Por favor, selecciona una cantidad mayor a 0.");
+                return;
+            }
+
+            let cartId;
+
+            // Verifica si existe un carrito para el usuario
+            fetch(`/api/carts/${userId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Si el carrito ya existe
+                        cartId = data.cart.id;
+                        console.log("Carrito encontrado, ID:", cartId);
+                        return cartId;
+                    } else {
+                        // Crear un nuevo carrito
+                        return fetch(`/api/carts`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ userId })
+                        })
+                            .then(response => response.json())
+                            .then(newCartData => {
+                                if (newCartData.success) {
+                                    cartId = newCartData.cart.id;
+                                    console.log("Nuevo carrito creado, ID:", cartId);
+                                    return cartId;
+                                } else {
+                                    throw new Error("Error al crear un nuevo carrito.");
+                                }
                             });
-                        } else {
-                            throw new Error('Producto no encontrado.');
-                        }
+                    }
+                })
+                .then(cartId => {
+                    // Crear un cart-item con el cartId obtenido
+                    return fetch(`/api/cart-items`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ cartId, productId, quantity })
                     });
-            } else {
-                throw new Error('Error al agregar producto al carrito.');
-            }
-        })
-        .then(response => response.json())
-        .then(updateData => {
-            if (updateData.success) {
-                console.log("Stock actualizado correctamente.");
-                document.getElementById('quantity').innerText = ''; // Limpia la cantidad seleccionada
-                actualizarContadorCarrito(cartId);
-                location.reload();
-            } else {
-                console.error("Error al actualizar el stock.");
-            }
-        })
-        .catch(error => console.error('Error en el proceso:', error));
-}
-
-
+                })
+                .then(response => response.json())
+                .then(itemData => {
+                    if (itemData.success) {
+                        showSuccessModal();
+                        return fetch(`/api/products/${productId}`)
+                            .then(response => response.json())
+                            .then(productData => {
+                                if (productData.success) {
+                                    const updatedStock = productData.product.stock - quantity;
+                                    if (updatedStock < 0) {
+                                        alert("No hay suficiente stock disponible.");
+                                        throw new Error("Stock insuficiente.");
+                                    }
+                                    return fetch(`/api/products/${productId}`, {
+                                        method: 'PUT',
+                                        headers: {
+                                            'Content-Type': 'application/json'
+                                        },
+                                        body: JSON.stringify({
+                                            stock: updatedStock,
+                                            categoryId: productData.product.categoryId
+                                        })
+                                    });
+                                } else {
+                                    throw new Error('Producto no encontrado.');
+                                }
+                            });
+                    } else {
+                        throw new Error('Error al agregar producto al carrito.');
+                    }
+                })
+                .then(response => response.json())
+                .then(updateData => {
+                    if (updateData.success) {
+                        console.log("Stock actualizado correctamente.");
+                        document.getElementById('quantity').innerText = ''; // Limpia la cantidad seleccionada
+                        actualizarContadorCarrito(cartId);
+                        location.reload();
+                    } else {
+                        console.error("Error al actualizar el stock.");
+                    }
+                })
+                .catch(error => console.error('Error en el proceso:', error));
+        }
 
 
 

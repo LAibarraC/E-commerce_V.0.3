@@ -95,7 +95,7 @@
         // Función para cargar los detalles del producto
         function loadProductDetails() {
             const productId = getProductId();
-            fetch(`http://localhost:3000/api/products/${productId}`) // Verifica que esta URL sea correcta
+            fetch(`/api/products/${productId}`) // Verifica que esta URL sea correcta
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
@@ -120,9 +120,9 @@
                         document.getElementById('product-price').textContent = `$${product.price.toFixed(2)}`;
 
                         // Actualizar imágenes
-                        document.getElementById('main-image').src = product.image1;
-                        document.getElementById('small-image1').src = product.image2;
-                        document.getElementById('small-image2').src = product.image3;
+                        document.getElementById('main-image').src = `/uploads/products/${product.image1}`;
+                        document.getElementById('small-image1').src = `/uploads/products/${product.image2}`;
+                        document.getElementById('small-image2').src = `/uploads/products/${product.image3}`;
                     } else {
                         console.error('Producto no encontrado o error en la API', data);
                     }

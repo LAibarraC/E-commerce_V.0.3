@@ -123,8 +123,8 @@
                     <input type="text" id="codigo" name="code"><br>
                     <label for="brand">Marca:</label><br>
                     <input type="text" id="brand" name="brand"><br>
-                    <label for="color">Color:</label><br>
-                    <input type="text" id="color1" name="color1"><br>
+                    <label for="color">Estrellas:</label><br>
+                    <input type="number" id="rating" name="rating"><br>
                     <label for="price">Precio:</label><br>
                     <input type="number" id="price" name="price" min="0" required><br>
                     <label for="descuento">Descuento:</label><br>
@@ -156,7 +156,7 @@
                     <textarea id="description" name="description" required></textarea><br>
                     <label for="tags">Etiquetas:</label><br>
                     <input type="text" id="tags" name="tags" placeholder="separar etiquetas por comas"><br><br>
-
+   
                     <div class="selectors">
                         <label for="categoria">Categoría:</label>
                         <select id="categoria" name="categoryId" required>
@@ -172,6 +172,7 @@
                             <div class="image-preview" id="imagePreview1">Agregar +</div>
                             <input type="file" id="imageInput1" name="image1" accept="image/*" class="hidden-input">
                             <button type="button" class="uploadButton" data-target="imageInput1">Subir Imagen</button>
+                            
                         </div>
                         <div class="image-box">
                             <div class="image-preview" id="imagePreview2">Agregar +</div>
@@ -184,6 +185,17 @@
                             <button type="button" class="uploadButton" data-target="imageInput3">Subir Imagen</button>
                         </div>
                     </div>
+                    <div class="col">
+                            <label for="color">Color:</label><br>
+                            <input class="cs" type="text" id="color1" name="color1"><br>
+                            <div class="cuadr"> </div>
+                            <label for="color">Color:</label><br>
+                            <input class="cs" type="text" id="color2" name="color2"><br>
+                            <div class="cuadr"></div>
+                            <label for="color">Color:</label><br>
+                            <input class="cs" type="text" id="color3" name="color3"><br>
+                    </div>
+                    
                 </div>
             </div>
             <button type="submit" class="submit-btn">Guardar Producto</button>

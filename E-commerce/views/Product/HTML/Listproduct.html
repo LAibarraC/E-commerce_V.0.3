@@ -83,7 +83,7 @@
 
         // Función para cargar productos
         function loadProducts() {
-            fetch('http://localhost:3000/api/products')
+            fetch('/api/products')
                 .then(response => response.json())
                 .then(data => {
                     console.log(data); // Imprimir la respuesta en la consola para verificar
@@ -95,7 +95,7 @@
                             productItem.classList.add('product-item');
                             productItem.innerHTML = `
                                 <div class="product-info">
-                                    <img src="${product.image1}" alt="Producto" class="product-image">
+                                    <img src="/uploads/products/${product.image1}" alt="Producto" class="product-image">
                                     <div class="product-details">
                                         <p><strong>Nombre del Producto:</strong> ${product.name}</p><br>
                                         <p><strong>Modelo:</strong> ${product.model}</p><br>

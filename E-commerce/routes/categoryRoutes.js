@@ -8,24 +8,25 @@ const {
     searchCategories
 } = require('../controllers/categoryController');
 
-const upload = require('../config/multercategoria'); // Asegúrate de que multer esté bien configurado
-
 const router = express.Router();
 
-// Rutas para categorías
-router.get('/categories', getAllCategories); // Obtener todas las categorías
+// Obtener todas las categorías
+router.get('/categories', getAllCategories);
 
-router.post('/categorias', upload, createCategory); // Crear una nueva categoría con imagen
+// Crear una nueva categoría
+router.post('/categories', createCategory);
 
+// Editar una categoría existente
+router.put('/categories/:id', editCategory);
 
-router.put('/categories/:id', upload, editCategory); // Editar categoría existente con imagen
+// Eliminar una categoría
+router.delete('/categories/:id', deleteCategory);
 
-router.delete('/categories/:id', deleteCategory); // Eliminar categoría
+// Obtener una categoría por ID
+router.get('/categories/:id', getCategory);
 
-router.get('/categories/:id', getCategory); // Obtener una categoría por ID
-
-router.get('/categories/search', searchCategories); // Buscar categorías
+// Buscar categorías por criterio
+router.get('/categories/search', searchCategories);
 
 module.exports = router;
-
-
+ 
