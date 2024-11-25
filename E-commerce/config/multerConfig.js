@@ -3,7 +3,7 @@ const multer = require('multer'); // Importar multer
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'uploads/'); // Carpeta donde se guardarán las imágenes
+        cb(null, 'E-commerce/uploads/products'); // Carpeta donde se guardarán las imágenes
     },
     filename: function (req, file, cb) {
         cb(null, Date.now() + '-' + file.originalname); // Nombra el archivo con un timestamp

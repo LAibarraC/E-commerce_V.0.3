@@ -238,16 +238,16 @@
 
                             images.forEach((img, index) => {
                                 if (imageContainers[index]) {
-                                    imageContainers[index].src = `/uploads/${img}`;
+                                    imageContainers[index].src = `/uploads/products/${img}`;
                                     imageContainers[index].dataset.color = colors[index];
                                 }
                                 if (thumbnails[index]) {
-                                    thumbnails[index].src = `/uploads/${img}`;
+                                    thumbnails[index].src = `/uploads/products/${img}`;
                                     thumbnails[index].dataset.color = colors[index];
                                 }
                             });
 
-                            principalImage.src = `/uploads/${producto.image1}`;
+                            principalImage.src = `/uploads/products/${producto.image1}`;
                             principalImage.dataset.color = producto.color1;
 
                             document.querySelectorAll('.grupo img, .peque img').forEach((imgElement, index) => {
@@ -299,7 +299,7 @@
                                             divTarjeta.innerHTML = `
                                                                 <div class="product">
                                                                     <div class="imagen">
-                                                                        <img src="/uploads/${producto.image1}" width="100%" height="100%">
+                                                                        <img src="/uploads/products/${producto.image1}" width="100%" height="100%">
                                                                     </div>
                                                                     <div class="nombre">${producto.name}</div>
                                                                     <div class="estrellas">${mostrarCalificacion(producto.rating)} <span class="cali">&nbsp;&nbsp;${producto.rating}</span></div>

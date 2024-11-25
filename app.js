@@ -63,6 +63,9 @@ app.get('/search', (req, res) => {
 app.get('/carrito', (req, res) => {
     res.sendFile(path.join(__dirname, 'E-commerce/views/carrito/HTML/cart.html'));  // Ruta corregida
 });
+app.get('/category', (req, res) => {
+    res.sendFile(path.join(__dirname, 'E-commerce/views/Product/HTML/category.html'));  // Ruta corregida
+});
 
 
 // Rutas de la API

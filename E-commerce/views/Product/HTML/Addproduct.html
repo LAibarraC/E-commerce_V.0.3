@@ -89,7 +89,7 @@
         // Función para obtener los nombres de las categorías y llenarlos en el <select>
         async function fetchCategoryNames() {
             try {
-                const response = await fetch('http://localhost:3000/api/categories');
+                const response = await fetch('/api/categories');
                 const categories = await response.json();
 
                 const categorySelect = document.getElementById('categoria');
@@ -113,7 +113,7 @@
     <main>
         <h2>NUEVO PRODUCTO</h2>
 
-        <form class="product_form_create" id="addProductForm" method="POST" action="http://localhost:3000/api/products"
+        <form class="product_form_create" id="addProductForm" method="POST" action="/api/products"
             enctype="multipart/form-data">
             <div class="datos">
                 <div class="caja1">

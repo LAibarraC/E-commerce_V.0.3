@@ -3,7 +3,7 @@ const Category = require('../models/category');
 class CategoryRepository {
     async findAll() {
         try {
-            return await Category.findAll(); // Correcto
+            return await Category.findAll(); 
         } catch (error) {
             throw new Error('Error al obtener todas las categorías: ' + error.message);
         }
@@ -17,7 +17,7 @@ class CategoryRepository {
                 image: category.image,
                 updateAt: category.updateAt
             });
-            return createdCategory.id; // Correcto
+            return createdCategory.id; 
         } catch (error) {
             throw new Error('Error al crear categoría: ' + error.message);
         }
@@ -57,7 +57,7 @@ class CategoryRepository {
     }
     
     async searchCategories(criteria) {
-        // Utilizar el modelo Sequelize para buscar categorías según los criterios
+
         return await Category.findAll({
             where: criteria
         });
